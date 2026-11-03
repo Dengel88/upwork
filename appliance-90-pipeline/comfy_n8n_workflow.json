@@ -1,0 +1,106 @@
+{
+  "name": "Synndicate AI — 90-Appliance Zero-Hallucination Batch Production Pipeline (n8n + ComfyUI API)",
+  "version": "2.4.0",
+  "architect": "Ayman K. | Synndicate AI",
+  "pipeline_config": {
+    "total_skus": 90,
+    "deliverables_per_sku": {
+      "lifestyle_stills": 5,
+      "hero_video_seconds": 10,
+      "video_fps": 24,
+      "resolution_stills": "3840x2160",
+      "resolution_video": "1920x1080"
+    },
+    "quality_gates": {
+      "min_masked_ssim": 0.985,
+      "max_delta_e_color": 1.2,
+      "logo_ocr_confidence": 0.99,
+      "pixel_composite_pass": true
+    }
+  },
+  "n8n_orchestration_nodes": [
+    {
+      "id": "node_1_sku_ingest",
+      "type": "n8n-nodes-base.airtableTrigger",
+      "name": "1. SKU Reference Asset Watcher (90 Appliances)",
+      "parameters": {
+        "table": "Appliance_Catalog_90_SKUs",
+        "fields": ["sku_id", "category", "cad_front_png", "angle_45_png", "control_panel_crop", "brand_logo_svg", "pantone_hex", "scene_preset"]
+      }
+    },
+    {
+      "id": "node_2_sam2_segmentation",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "2. ComfyUI — SAM2 + BiRefNet Sub-Pixel Alpha Masking",
+      "parameters": {
+        "method": "POST",
+        "url": "http://comfyui-worker.internal:8188/prompt",
+        "body": {
+          "workflow_stage": "segmentation_lock",
+          "model": "sam2_hiera_large.pt",
+          "edge_refinement": "BiRefNet-general-resolution_2048x2048",
+          "separate_layers": ["chassis_mask", "control_panel_knobs_mask", "led_display_mask", "brand_badge_mask"]
+        }
+      }
+    },
+    {
+      "id": "node_3_environment_generation",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "3. ComfyUI — FLUX.1-dev + Dual ControlNet (Depth + Canny) + IC-Light Relighting",
+      "parameters": {
+        "method": "POST",
+        "url": "http://comfyui-worker.internal:8188/prompt",
+        "body": {
+          "base_model": "flux1-dev-fp8.safetensors",
+          "controlnet_stack": [
+            {"type": "controlnet_depth_anything_v2", "strength": 0.96, "start": 0.0, "end": 1.0},
+            {"type": "controlnet_canny_pro", "strength": 0.94, "start": 0.0, "end": 0.85}
+          ],
+          "relighting_node": {
+            "model": "ic_light_fc_fe.safetensors",
+            "preserve_albedo": true,
+            "specular_reflection_match": "uk_modern_kitchen_hdri_04.exr"
+          }
+        }
+      }
+    },
+    {
+      "id": "node_4_pixel_exact_composite",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "4. Deterministic Pixel-Lock Overlay (Knobs, LEDs, Logos, Bezel)",
+      "parameters": {
+        "method": "POST",
+        "url": "http://qa-validator.internal:8000/composite-lock",
+        "body": {
+          "blend_mode": "frequency_separation_albedo_lock",
+          "preserve_regions": ["control_panel_knobs_mask", "led_display_mask", "brand_badge_mask"],
+          "allow_diffusion_hallucination_inside_mask": false
+        }
+      }
+    },
+    {
+      "id": "node_5_qa_gate",
+      "type": "n8n-nodes-base.code",
+      "name": "5. Automated Deterministic QA Gate (SSIM >= 0.985 & Delta-E < 1.2)",
+      "parameters": {
+        "script": "pipeline_validator.py --verify-sku {{$json.sku_id}} --min-ssim 0.985 --max-delta-e 1.2"
+      }
+    },
+    {
+      "id": "node_6_video_motion",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "6. 10s Hero Commercial Video (Kling 3.0 Pro / Seedance + 3D Planar Track Lock)",
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.weavy.ai/v1/pipelines/appliance-10s-motion",
+        "body": {
+          "first_frame": "{{$node['node_4_pixel_exact_composite'].json.locked_4k_still_url}}",
+          "duration_seconds": 10,
+          "camera_trajectory": "smooth_orbital_slider_45deg_slow_push",
+          "motion_mask_freeze": "appliance_rigid_body_mask",
+          "ambient_dynamics": ["subtle_steam_wisps", "natural_window_light_shift", "countertop_caustics"]
+        }
+      }
+    }
+  ]
+}

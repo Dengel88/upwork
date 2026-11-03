@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VITUO — n8n Cloud + OpenAI + Supabase pgvector + Google Workspace Diagnostic Hub | Ayman K.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f8fafc; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(17, 24, 39, 0.82); backdrop-filter: blur(12px); border: 1px solid rgba(55, 65, 81, 0.75); }
+    .n8n-canvas {
+      background-color: #090d16;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .node-active { border-color: #10b981 !important; box-shadow: 0 0 22px rgba(16, 185, 129, 0.28); }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Top Header -->
+  <header class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-extrabold text-sm mono tracking-wider shadow-lg shadow-emerald-500/20">
+          VITUO
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white">Ayman K. | Synndicate AI</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">Lead AI Systems Architect</span>
+          </div>
+          <p class="text-xs text-slate-400">n8n Cloud + OpenAI (`gpt-4o-mini` / `text-embedding-3-small`) + Supabase `pgvector` + Google Workspace Finish &amp; Handover Hub</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="downloadWorkflow('ingestion')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 text-xs font-semibold mono transition">
+          ↓ Drive→Supabase RAG.json
+        </button>
+        <button onclick="downloadWorkflow('agent')" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold mono transition shadow-lg shadow-emerald-500/20">
+          ↓ Workspace AI Agent.json
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- Status Banner -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass rounded-xl p-4 border-l-4 border-l-emerald-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">Architecture Policy</div>
+        <div class="text-xl font-extrabold text-white mt-1 mono">100% Native Nodes</div>
+        <div class="text-xs text-emerald-400 mt-1">0 Custom JS/Python Code Nodes</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-cyan-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">LLM &amp; Embeddings</div>
+        <div class="text-xl font-extrabold text-white mt-1 mono">gpt-4o-mini + 1536d</div>
+        <div class="text-xs text-cyan-300 mt-1">`text-embedding-3-small` Verified</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-amber-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">Google Workspace</div>
+        <div class="text-xl font-extrabold text-white mt-1 mono">Drive • Gmail • Cal</div>
+        <div class="text-xs text-amber-300 mt-1">Native `$fromAI()` Tool Binding</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-purple-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">Turnkey Completion</div>
+        <div class="text-xl font-extrabold text-emerald-400 mt-1 mono">$30 Fixed-Price</div>
+        <div class="text-xs text-purple-300 mt-1">24-Hour Final 15% Delivery</div>
+      </div>
+    </section>
+
+    <!-- Visual Native n8n Cloud Node Inspector -->
+    <section class="glass rounded-2xl p-6 space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mono">Interactive n8n Cloud Architecture Inspector</span>
+          <h2 class="text-lg font-bold text-white mt-0.5">Click Any Native Node to Inspect Exact Configuration &amp; How It Replaces Brittle Custom Code</h2>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
+          <button onclick="switchCanvasTab('agent')" id="tabBtnAgent" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">
+            Workflow 1: AI Agent + Gmail/Calendar/Supabase
+          </button>
+          <button onclick="switchCanvasTab('ingest')" id="tabBtnIngest" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">
+            Workflow 2: Google Drive → Supabase RAG Ingestion
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left 7 Cols: Interactive Node Graph -->
+        <div class="lg:col-span-7 n8n-canvas rounded-2xl border border-slate-800 p-5 min-h-[360px] flex flex-col justify-between" id="nodeCanvasArea">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Right 5 Cols: Selected Node Parameter Inspector -->
+        <div class="lg:col-span-5 bg-slate-950 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs mono uppercase text-emerald-400 font-semibold" id="inspectedNodeType">@n8n/n8n-nodes-langchain.agent</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] mono">Native n8n Cloud</span>
+            </div>
+            <h3 class="text-base font-bold text-white mt-1" id="inspectedNodeTitle">Native n8n AI Agent (Tools Agent)</h3>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed" id="inspectedNodeWhy">
+              Replaces brittle custom HTTP/Code routers with n8n's built-in Tools Agent. Automatically orchestrates `gpt-4o-mini`, thread-scoped memory, Supabase `pgvector` retrieval, Google Calendar booking, and Gmail replies.
+            </p>
+          </div>
+
+          <div>
+            <div class="text-[11px] mono text-slate-400 mb-1.5">Exact Node Parameter Schema:</div>
+            <pre id="inspectedNodeJson" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] mono text-emerald-300 overflow-x-auto max-h-48 leading-relaxed"></pre>
+          </div>
+
+          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
+            <strong>Why Native Matters:</strong> Zero custom JS/Python `Code` nodes means n8n Cloud updates never break your workflow and non-developers can inspect every field in the UI.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Fix Simulator for the 5 Most Common Failure Points in This Stack -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-5 glass rounded-2xl p-6 space-y-3">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold mono">Final 15% Diagnostic Simulator</span>
+          <h3 class="text-lg font-bold text-white mt-0.5">5 Common Failure Points We Fix Immediately</h3>
+          <p class="text-xs text-slate-400 mt-1">Select any failure symptom below to view the exact SQL / native n8n fix we apply:</p>
+        </div>
+
+        <div class="space-y-2" id="bugList">
+          <button onclick="selectBug(0)" id="bugBtn0" class="w-full p-3 rounded-xl border border-emerald-400 bg-emerald-500/15 text-left transition">
+            <div class="text-xs font-bold text-white">1. Supabase `pgvector` 1536-dim Metadata Filter Mismatch</div>
+            <div class="text-[11px] text-slate-300 mt-0.5">Symptom: Vector Store returns 0 results or `PGRST202` RPC signature error</div>
+          </button>
+          <button onclick="selectBug(1)" id="bugBtn1" class="w-full p-3 rounded-xl border border-slate-800 bg-slate-900/70 hover:border-slate-700 text-left transition">
+            <div class="text-xs font-bold text-white">2. Google OAuth2 7-Day Token Expiration in n8n Cloud</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Symptom: `invalid_grant` error on Gmail / Drive / Calendar triggers</div>
+          </button>
+          <button onclick="selectBug(2)" id="bugBtn2" class="w-full p-3 rounded-xl border border-slate-800 bg-slate-900/70 hover:border-slate-700 text-left transition">
+            <div class="text-xs font-bold text-white">3. Gmail Thread Deduplication &amp; Self-Reply Loops</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Symptom: Agent replies to its own sent emails or loses conversation thread</div>
+          </button>
+          <button onclick="selectBug(3)" id="bugBtn3" class="w-full p-3 rounded-xl border border-slate-800 bg-slate-900/70 hover:border-slate-700 text-left transition">
+            <div class="text-xs font-bold text-white">4. Google Calendar ISO-8601 Timezone Offset Bug (`-03:00`)</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Symptom: Meetings booked 3 hours off in `America/Argentina/Buenos_Aires`</div>
+          </button>
+          <button onclick="selectBug(4)" id="bugBtn4" class="w-full p-3 rounded-xl border border-slate-800 bg-slate-900/70 hover:border-slate-700 text-left transition">
+            <div class="text-xs font-bold text-white">5. Drive PDF/Doc Chunk Overlap Loss &amp; Duplicate Vectors</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Symptom: Editing a Google Doc creates conflicting duplicate RAG answers</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 7 Cols: Root Cause & Drop-in Native Solution -->
+      <div class="lg:col-span-7 glass rounded-2xl p-6 flex flex-col justify-between space-y-4">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs mono uppercase text-emerald-400 font-semibold" id="bugBadge">DIAGNOSTIC #01 • SUPABASE PGVECTOR RPC</span>
+              <h3 class="text-lg font-bold text-white mt-0.5" id="bugTitle">1. `pgvector` 1536-dim `text-embedding-3-small` Metadata Filter Mismatch</h3>
+            </div>
+            <button onclick="copyBugFix()" id="copyFixBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs mono text-emerald-300 border border-slate-700 transition">
+              Copy Fix Snippet
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+            <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30">
+              <div class="text-xs font-bold text-rose-300 uppercase mono">Why It Breaks at 85%</div>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed" id="bugRootCause"></p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div class="text-xs font-bold text-emerald-300 uppercase mono">Our 100% Native Fix</div>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed" id="bugSolutionDesc"></p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs mono text-slate-400 mb-1.5">Production Drop-In Configuration / SQL Patch:</div>
+          <pre id="bugCodeSnippet" class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs mono text-cyan-300 overflow-x-auto max-h-64 leading-relaxed"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Handover & Maintenance Documentation Preview -->
+    <section class="glass rounded-2xl p-6 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-purple-400 font-semibold mono">Included Deliverable</span>
+          <h3 class="text-lg font-bold text-white">Clean Handover &amp; Maintenance Runbook (Delivered with Final Workflow)</h3>
+        </div>
+        <button onclick="downloadHandoverDoc()" class="px-3.5 py-2 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-500/40 text-xs font-semibold mono transition">
+          ↓ Download HANDOVER_RUNBOOK.md
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+          <div class="font-bold text-white">1. Credential &amp; OAuth2 Checklist</div>
+          <p class="text-slate-400 leading-relaxed">Step-by-step guide to keeping Google Workspace OAuth2 in "Production" status, rotating OpenAI API keys, and managing Supabase Service Role keys safely in n8n Cloud.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+          <div class="font-bold text-white">2. Adding New Drive Knowledge Folders</div>
+          <p class="text-slate-400 leading-relaxed">How to drop new PDFs, Google Docs, or SOP spreadsheets into the watched Drive folder and verify automatic 1536-dim re-indexing in Supabase `public.documents`.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+          <div class="font-bold text-white">3. Native Error Alerting &amp; Logs</div>
+          <p class="text-slate-400 leading-relaxed">Configured native n8n `Error Trigger` workflow that sends an instant Gmail/Slack summary if OpenAI or Supabase ever hits a rate limit or quota cap.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const WORKFLOW_NODES = {
+      agent: [
+        {
+          id: "gmail_trig",
+          label: "1. Gmail Trigger",
+          sub: "is:unread -from:me",
+          type: "n8n-nodes-base.gmailTrigger",
+          why: "Polls unread inbox messages while excluding messages sent by the agent itself (`-from:me`), preventing infinite reply loops without any custom JS filtering.",
+          params: {
+            pollTimes: { item: [{ mode: "everyMinute" }] },
+            simple: false,
+            filters: { q: "is:unread -from:me label:INBOX" }
+          }
+        },
+        {
+          id: "ai_agent",
+          label: "2. Native AI Agent",
+          sub: "Tools Agent (Zero Code)",
+          type: "@n8n/n8n-nodes-langchain.agent",
+          why: "Replaces brittle custom HTTP/Code routers with n8n's built-in Tools Agent. Automatically orchestrates gpt-4o-mini, thread-scoped memory, Supabase pgvector retrieval, Calendar booking, and Gmail replies.",
+          params: {
+            agent: "toolsAgent",
+            text: "={{ $json.text }}",
+            systemMessage: "Always query supabase_knowledge_base first. Use ISO-8601 (-03:00) for Calendar tool calls."
+          }
+        },
+        {
+          id: "openai_chat",
+          label: "3. OpenAI Model",
+          sub: "gpt-4o-mini (temp 0.1)",
+          type: "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          why: "Uses low-latency `gpt-4o-mini` at `temperature: 0.1` for deterministic tool calling and grounded RAG answers.",
+          params: {
+            model: "gpt-4o-mini",
+            options: { temperature: 0.1 }
+          }
+        },
+        {
+          id: "supabase_tool",
+          label: "4. Supabase Vector Tool",
+          sub: "retrieve-as-tool (topK: 5)",
+          type: "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+          why: "Connects directly to `public.documents` via `match_documents` RPC using 1536-dim `text-embedding-3-small` queries.",
+          params: {
+            mode: "retrieve-as-tool",
+            toolName: "supabase_knowledge_base",
+            tableName: "documents",
+            topK: 5,
+            queryName: "match_documents"
+          }
+        },
+        {
+          id: "gcal_tool",
+          label: "5. Google Calendar Tool",
+          sub: "Native $fromAI() Binding",
+          type: "n8n-nodes-base.googleCalendarTool",
+          why: "Uses n8n's native `$fromAI()` expressions so the AI Agent populates `start`, `end`, and `summary` directly without a custom JSON parser node.",
+          params: {
+            resource: "event",
+            operation: "create",
+            start: "={{ $fromAI('start_iso', 'ISO-8601 with -03:00 offset') }}",
+            end: "={{ $fromAI('end_iso', 'ISO-8601 with -03:00 offset') }}"
+          }
+        },
+        {
+          id: "gmail_reply",
+          label: "6. Gmail Reply Tool",
+          sub: "Thread-Locked Reply",
+          type: "n8n-nodes-base.gmailTool",
+          why: "Replies directly to `messageId` / `threadId` using `$fromAI('reply_body')` so customer conversations stay in a single email thread.",
+          params: {
+            operation: "reply",
+            messageId: "={{ $json.id }}",
+            message: "={{ $fromAI('reply_body', 'Grounded response') }}"
+          }
+        }
+      ],
+      ingest: [
+        {
+          id: "drive_trig",
+          label: "1. Google Drive Trigger",
+          sub: "fileUpdated / Created",
+          type: "n8n-nodes-base.googleDriveTrigger",
+          why: "Watches your designated Google Drive knowledge base folder for any new or updated SOPs, PDFs, or Google Docs.",
+          params: {
+            triggerOn: "specificFolder",
+            event: "fileUpdated"
+          }
+        },
+        {
+          id: "drive_dl",
+          label: "2. Drive Download Binary",
+          sub: "Auto Docs→PDF Convert",
+          type: "n8n-nodes-base.googleDrive",
+          why: "Downloads file binary and automatically converts native Google Docs into clean parseable text/PDF streams.",
+          params: {
+            operation: "download",
+            fileId: "={{ $json.id }}",
+            googleFileConversion: { docsToFormat: "application/pdf" }
+          }
+        },
+        {
+          id: "supa_dedup",
+          label: "3. Supabase Delete Old",
+          sub: "metadata->>file_id Match",
+          type: "n8n-nodes-base.supabase",
+          why: "Deletes prior vector chunks for `file_id` before re-inserting so updated documents never produce duplicate or stale embeddings.",
+          params: {
+            operation: "delete",
+            tableId: "documents",
+            filterString: "=metadata->>file_id=eq.{{$json.id}}"
+          }
+        },
+        {
+          id: "splitter",
+          label: "4. Recursive Text Splitter",
+          sub: "800 chars / 150 overlap",
+          type: "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+          why: "Splits documents cleanly on paragraph and sentence boundaries with 150-character overlap so tables and headings never lose context.",
+          params: {
+            chunkSize: 800,
+            chunkOverlap: 150
+          }
+        },
+        {
+          id: "embed_ins",
+          label: "5. OpenAI Embeddings",
+          sub: "text-embedding-3-small",
+          type: "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+          why: "Generates 1536-dimensional vectors matching the exact `vector(1536)` column in Supabase `public.documents`.",
+          params: {
+            model: "text-embedding-3-small",
+            options: { dimensions: 1536 }
+          }
+        },
+        {
+          id: "supa_ins",
+          label: "6. Supabase Vector Insert",
+          sub: "Insert Chunks + Metadata",
+          type: "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+          why: "Inserts text chunks, 1536-d embeddings, and `{file_id, file_name}` JSONB metadata into Supabase with zero custom SQL code nodes.",
+          params: {
+            mode: "insert",
+            tableName: "documents",
+            queryName: "match_documents"
+          }
+        }
+      ]
+    };
+
+    const BUG_FIXES = [
+      {
+        badge: "DIAGNOSTIC #01 • SUPABASE PGVECTOR RPC",
+        title: "1. `pgvector` 1536-dim `text-embedding-3-small` Metadata Filter Mismatch",
+        cause: "n8n's native Supabase Vector Store node calls `match_documents(query_embedding, match_count, filter)`. If your Supabase SQL function omits the `filter jsonb default '{}'` parameter or uses 3072 dimensions instead of 1536, n8n either throws `PGRST202` or returns 0 chunks.",
+        solution: "Run our exact idempotent SQL migration in the Supabase SQL Editor to lock `vector(1536)` and the exact 3-argument `match_documents` signature expected by n8n Cloud.",
+        code: `-- Run in Supabase SQL Editor (100% compatible with n8n Supabase Vector Store node)
+create extension if not exists vector;
+
+create table if not exists public.documents (
+  id bigserial primary key,
+  content text,
+  metadata jsonb,
+  embedding vector(1536) -- Matches OpenAI text-embedding-3-small
+);
+
+create or replace function public.match_documents (
+  query_embedding vector(1536),
+  match_count int default 5,
+  filter jsonb default '{}'
+) returns table (
+  id bigint,
+  content text,
+  metadata jsonb,
+  similarity float
+)
+language plpgsql
+as $$
+begin
+  return query
+  select
+    documents.id,
+    documents.content,
+    documents.metadata,
+    1 - (documents.embedding <=> query_embedding) as similarity
+  from public.documents
+  where documents.metadata @> filter
+  order by documents.embedding <=> query_embedding
+  limit match_count;
+end;
+$$;`
+      },
+      {
+        badge: "DIAGNOSTIC #02 • GOOGLE WORKSPACE OAUTH2",
+        title: "2. Google OAuth2 Refresh Token Expiration in n8n Cloud (`invalid_grant`)",
+        cause: "When a Google Cloud OAuth Consent Screen is left in 'Testing' status, Google automatically revokes refresh tokens every 7 days, breaking Gmail, Drive, and Calendar triggers silently.",
+        solution: "Set OAuth Publishing Status to 'In Production' (or Internal for Google Workspace orgs) and verify full scopes (`gmail.modify`, `calendar`, `drive.readonly`) in n8n Cloud Credentials.",
+        code: `# Google Cloud Console -> APIs & Services -> OAuth consent screen
+1. User Type: "Internal" (if Google Workspace domain) or "External" -> Publish App ("In production")
+2. Authorized Redirect URI for n8n Cloud:
+   https://oauth.n8n.cloud/oauth2/callback
+3. Required Scopes enabled:
+   - https://www.googleapis.com/auth/gmail.modify
+   - https://www.googleapis.com/auth/calendar
+   - https://www.googleapis.com/auth/drive.readonly`
+      },
+      {
+        badge: "DIAGNOSTIC #03 • GMAIL LOOP & THREAD LOCK",
+        title: "3. Gmail Thread Deduplication & Infinite Self-Reply Prevention",
+        cause: "Watching all inbox messages causes the Gmail Trigger to fire on the AI Agent's own outgoing replies, creating an infinite loop and splitting replies into separate threads.",
+        solution: "Configure the native Gmail Trigger query filter with `is:unread -from:me label:INBOX` and bind the Postgres Chat Memory `sessionKey` to `={{ $json.threadId }}`.",
+        code: `{
+  "node": "Gmail Trigger (Native)",
+  "filters": {
+    "q": "is:unread -from:me label:INBOX"
+  },
+  "memorySessionKey": "={{ $json.threadId }}",
+  "gmailReplyTool": {
+    "operation": "reply",
+    "messageId": "={{ $json.id }}"
+  }
+}`
+      },
+      {
+        badge: "DIAGNOSTIC #04 • GOOGLE CALENDAR TIMEZONE OFFSET",
+        title: "4. Google Calendar ISO-8601 Timezone Offset Bug (`-03:00`)",
+        cause: "When `gpt-4o-mini` passes a bare timestamp like `2026-11-05T14:00:00` without an explicit UTC offset, Google Calendar defaults to UTC and shifts appointments by 3 hours.",
+        solution: "Lock the n8n workflow settings timezone to `America/Argentina/Buenos_Aires` and enforce explicit ISO-8601 offset descriptions inside n8n's native `$fromAI()` Calendar Tool fields.",
+        code: `{
+  "workflowSettings": {
+    "timezone": "America/Argentina/Buenos_Aires"
+  },
+  "googleCalendarToolParameters": {
+    "start": "={{ $fromAI('start_iso', 'ISO-8601 start time with -03:00 offset, e.g. 2026-11-05T14:00:00-03:00') }}",
+    "end": "={{ $fromAI('end_iso', 'ISO-8601 end time with -03:00 offset, e.g. 2026-11-05T14:30:00-03:00') }}"
+  }
+}`
+      },
+      {
+        badge: "DIAGNOSTIC #05 • DRIVE RAG DEDUPLICATION",
+        title: "5. Google Drive Re-Index Vector Duplication & Chunk Overlap Loss",
+        cause: "Every time a file in Google Drive is edited, inserting new chunks without removing old ones leaves outdated pricing/policy paragraphs in Supabase `public.documents`.",
+        solution: "Place a native Supabase `Delete` node immediately before `Supabase Vector Store (Insert)` that deletes existing rows where `metadata->>file_id` equals the updated Drive file ID.",
+        code: `{
+  "node": "Supabase Deduplicate Prior File Vectors",
+  "type": "n8n-nodes-base.supabase",
+  "parameters": {
+    "operation": "delete",
+    "tableId": "documents",
+    "filterType": "string",
+    "filterString": "=metadata->>file_id=eq.{{ $('Google Drive Trigger').item.json.id }}"
+  }
+}`
+      }
+    ];
+
+    let currentTab = "agent";
+
+    function switchCanvasTab(tab) {
+      currentTab = tab;
+      document.getElementById("tabBtnAgent").className = tab === "agent"
+        ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition"
+        : "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
+      document.getElementById("tabBtnIngest").className = tab === "ingest"
+        ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition"
+        : "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
+      renderCanvasNodes(0);
+    }
+
+    function renderCanvasNodes(selectedIndex) {
+      const nodes = WORKFLOW_NODES[currentTab];
+      const container = document.getElementById("nodeCanvasArea");
+      const cardsHtml = nodes.map((n, idx) => `
+        <button onclick="renderCanvasNodes(${idx})" class="p-3.5 rounded-xl border ${idx === selectedIndex ? 'node-active bg-emerald-500/10' : 'border-slate-700 bg-slate-900/85 hover:border-slate-500'} text-left transition flex flex-col justify-between">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] mono px-2 py-0.5 rounded bg-slate-950 text-emerald-400 border border-slate-800">NATIVE NODE</span>
+            <span class="w-2 h-2 rounded-full ${idx === selectedIndex ? 'bg-emerald-400 animate-ping' : 'bg-slate-600'}"></span>
+          </div>
+          <div class="mt-2">
+            <div class="text-xs font-bold text-white">${n.label}</div>
+            <div class="text-[11px] mono text-slate-400 mt-0.5">${n.sub}</div>
+          </div>
+        </button>
+      `).join("");
+
+      container.innerHTML = `
+        <div class="text-xs mono text-slate-400 flex items-center justify-between">
+          <span>${currentTab === 'agent' ? 'WORKFLOW 01: GMAIL / CALENDAR / SUPABASE AI AGENT' : 'WORKFLOW 02: GOOGLE DRIVE TO SUPABASE PGVECTOR INGESTION'}</span>
+          <span class="text-emerald-400">6 Native Nodes • 0 Custom Code Nodes</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-4">${cardsHtml}</div>
+        <div class="text-[11px] text-slate-400 flex items-center justify-between border-t border-slate-800/80 pt-3">
+          <span>Execution Order: v1 (n8n Cloud Native)</span>
+          <span class="mono text-cyan-300">Timezone: America/Argentina/Buenos_Aires</span>
+        </div>
+      `;
+
+      const sel = nodes[selectedIndex];
+      document.getElementById("inspectedNodeType").textContent = sel.type;
+      document.getElementById("inspectedNodeTitle").textContent = sel.label + " — " + sel.sub;
+      document.getElementById("inspectedNodeWhy").textContent = sel.why;
+      document.getElementById("inspectedNodeJson").textContent = JSON.stringify(sel.params, null, 2);
+    }
+
+    function selectBug(idx) {
+      const b = BUG_FIXES[idx];
+      document.getElementById("bugBadge").textContent = b.badge;
+      document.getElementById("bugTitle").textContent = b.title;
+      document.getElementById("bugRootCause").textContent = b.cause;
+      document.getElementById("bugSolutionDesc").textContent = b.solution;
+      document.getElementById("bugCodeSnippet").textContent = b.code;
+
+      [0, 1, 2, 3, 4].forEach(i => {
+        const btn = document.getElementById("bugBtn" + i);
+        btn.className = i === idx
+          ? "w-full p-3 rounded-xl border border-emerald-400 bg-emerald-500/15 text-left transition"
+          : "w-full p-3 rounded-xl border border-slate-800 bg-slate-900/70 hover:border-slate-700 text-left transition";
+      });
+    }
+
+    function copyBugFix() {
+      const code = document.getElementById("bugCodeSnippet").textContent;
+      navigator.clipboard.writeText(code);
+      const btn = document.getElementById("copyFixBtn");
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy Fix Snippet"; }, 1800);
+    }
+
+    function downloadWorkflow(kind) {
+      const payload = kind === "agent" ? WORKFLOW_NODES.agent : WORKFLOW_NODES.ingest;
+      const blob = new Blob([JSON.stringify({ name: "VITUO_Native_n8n_" + kind, nodes: payload }, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = kind === "agent" ? "google_workspace_agent.json" : "supabase_rag_ingestion.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadHandoverDoc() {
+      const md = `# VITUO — n8n Cloud + OpenAI + Supabase + Google Workspace Maintenance Guide\n\n1. **Supabase pgvector**: Uses \`public.documents\` (\`vector(1536)\`) with \`text-embedding-3-small\` and RPC \`match_documents\`.\n2. **Google Workspace OAuth2**: Ensure Google Cloud Consent Screen is Published ('In Production') so refresh tokens do not expire after 7 days.\n3. **Zero Custom Code Policy**: All routing, memory, RAG retrieval, Calendar booking, and Gmail replies use 100% native n8n Cloud nodes.\n`;
+      const blob = new Blob([md], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "VITUO_HANDOVER_RUNBOOK.md";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Initialize UI
+    renderCanvasNodes(1);
+    selectBug(0);
+  </script>
+</body>
+</html>

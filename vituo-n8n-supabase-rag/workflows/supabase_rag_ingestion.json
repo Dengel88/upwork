@@ -1,0 +1,157 @@
+{
+  "name": "VITUO_01_Google_Drive_to_Supabase_pgvector_RAG_Ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1VituoKnowledgeBaseFolderId",
+          "mode": "id"
+        },
+        "event": "fileUpdated"
+      },
+      "id": "node-gdrive-trigger",
+      "name": "Google Drive Trigger (Created/Updated)",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf"
+            }
+          }
+        }
+      },
+      "id": "node-gdrive-download",
+      "name": "Google Drive Download Binary",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documents",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=eq.{{ $('Google Drive Trigger (Created/Updated)').item.json.id }}"
+      },
+      "id": "node-supabase-dedup",
+      "name": "Supabase Deduplicate Prior File Vectors",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_id",
+                "value": "={{ $('Google Drive Trigger (Created/Updated)').item.json.id }}"
+              },
+              {
+                "name": "file_name",
+                "value": "={{ $('Google Drive Trigger (Created/Updated)').item.json.name }}"
+              },
+              {
+                "name": "mime_type",
+                "value": "={{ $('Google Drive Trigger (Created/Updated)').item.json.mimeType }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "node-default-data-loader",
+      "name": "Default Data Loader (Binary + Metadata)",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [920, 480]
+    },
+    {
+      "parameters": {
+        "chunkSize": 800,
+        "chunkOverlap": 150
+      },
+      "id": "node-recursive-splitter",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [920, 640]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "id": "node-openai-embeddings",
+      "name": "Embeddings OpenAI (text-embedding-3-small 1536d)",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [720, 480]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "node-supabase-vector-insert",
+      "name": "Supabase Vector Store (Insert Chunks)",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger (Created/Updated)": {
+      "main": [[{ "node": "Google Drive Download Binary", "type": "main", "index": 0 }]]
+    },
+    "Google Drive Download Binary": {
+      "main": [[{ "node": "Supabase Deduplicate Prior File Vectors", "type": "main", "index": 0 }]]
+    },
+    "Supabase Deduplicate Prior File Vectors": {
+      "main": [[{ "node": "Supabase Vector Store (Insert Chunks)", "type": "main", "index": 0 }]]
+    },
+    "Default Data Loader (Binary + Metadata)": {
+      "ai_document": [[{ "node": "Supabase Vector Store (Insert Chunks)", "type": "ai_document", "index": 0 }]]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [[{ "node": "Default Data Loader (Binary + Metadata)", "type": "ai_textSplitter", "index": 0 }]]
+    },
+    "Embeddings OpenAI (text-embedding-3-small 1536d)": {
+      "ai_embedding": [[{ "node": "Supabase Vector Store (Insert Chunks)", "type": "ai_embedding", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "errorWorkflow": "VITUO_Global_Error_Notifier"
+  }
+}

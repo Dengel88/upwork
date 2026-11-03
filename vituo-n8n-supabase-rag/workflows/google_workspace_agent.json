@@ -1,0 +1,164 @@
+{
+  "name": "VITUO_02_AI_Agent_OpenAI_Supabase_Gmail_Calendar_Orchestrator",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "is:unread -from:me label:INBOX"
+        }
+      },
+      "id": "node-gmail-trigger",
+      "name": "Gmail Trigger (Unread Inbox Only)",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "agent": "toolsAgent",
+        "promptType": "define",
+        "text": "=Sender: {{ $json.from.value[0].address }}\nSubject: {{ $json.subject }}\nThread ID: {{ $json.threadId }}\nMessage Body:\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "You are the VITUO Executive Assistant running on n8n Cloud. Always query the Supabase Vector Store first for company policy and document answers. When scheduling or checking availability in Google Calendar, always use explicit ISO-8601 timestamps with the configured timezone (America/Argentina/Buenos_Aires). Reply concisely via the Gmail Tool on the matching threadId."
+        }
+      },
+      "id": "node-ai-agent",
+      "name": "Native n8n AI Agent (Tools Agent)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "node-openai-chat",
+      "name": "OpenAI Chat Model (gpt-4o-mini)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [360, 520]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.threadId }}",
+        "contextWindowLength": 10
+      },
+      "id": "node-postgres-memory",
+      "name": "Postgres Chat Memory (Thread-Scoped)",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.1,
+      "position": [520, 520]
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "supabase_knowledge_base",
+        "toolDescription": "Search indexed Google Drive documents in Supabase pgvector for accurate company facts, SOPs, and pricing.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list"
+        },
+        "topK": 5,
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "node-supabase-tool",
+      "name": "Supabase Vector Store Tool (pgvector)",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [700, 520]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "id": "node-openai-embeddings-query",
+      "name": "Embeddings OpenAI (Query 1536d)",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [700, 680]
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "list"
+        },
+        "start": "={{ $fromAI('start_iso', 'Start time in ISO-8601 format with timezone offset') }}",
+        "end": "={{ $fromAI('end_iso', 'End time in ISO-8601 format with timezone offset') }}",
+        "additionalFields": {
+          "summary": "={{ $fromAI('event_title', 'Meeting title') }}",
+          "attendees": ["={{ $json.from.value[0].address }}"]
+        }
+      },
+      "id": "node-gcal-tool",
+      "name": "Google Calendar Tool (Native $fromAI)",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [880, 520]
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $json.id }}",
+        "message": "={{ $fromAI('reply_body', 'Polite, accurate response grounded in Supabase RAG') }}"
+      },
+      "id": "node-gmail-reply-tool",
+      "name": "Gmail Reply Tool (Native Thread Lock)",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [1040, 520]
+    }
+  ],
+  "connections": {
+    "Gmail Trigger (Unread Inbox Only)": {
+      "main": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Chat Model (gpt-4o-mini)": {
+      "ai_languageModel": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Postgres Chat Memory (Thread-Scoped)": {
+      "ai_memory": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "ai_memory", "index": 0 }]]
+    },
+    "Supabase Vector Store Tool (pgvector)": {
+      "ai_tool": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "ai_tool", "index": 0 }]]
+    },
+    "Embeddings OpenAI (Query 1536d)": {
+      "ai_embedding": [[{ "node": "Supabase Vector Store Tool (pgvector)", "type": "ai_embedding", "index": 0 }]]
+    },
+    "Google Calendar Tool (Native $fromAI)": {
+      "ai_tool": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "ai_tool", "index": 0 }]]
+    },
+    "Gmail Reply Tool (Native Thread Lock)": {
+      "ai_tool": [[{ "node": "Native n8n AI Agent (Tools Agent)", "type": "ai_tool", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires"
+  }
+}

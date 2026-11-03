@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecom Warrior Academy — AI Operating System & First 30-Day ROI Command Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #070B14; color: #F8FAFC; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.65); }
+    .glow-amber { box-shadow: 0 0 28px rgba(245, 158, 11, 0.15); }
+    .tab-active { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #070B14; font-weight: 700; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-amber-500 selection:text-slate-950">
+  <!-- Top Executive Bar -->
+  <header class="border-b border-slate-800/80 bg-slate-950/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center font-extrabold text-slate-950 text-lg shadow-lg shadow-amber-500/20">EW</div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg tracking-tight text-white">Ecom Warrior Academy — AI Operating System</h1>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-medium mono">$10M+ AUD Scale Architecture</span>
+          </div>
+          <p class="text-xs text-slate-400">Architected by <span class="text-amber-400 font-semibold">Ayman K. | Synndicate AI</span> • Claude Code + Custom MCP + GoHighLevel + n8n</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5 text-xs">
+        <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 mono">MCP Nodes: <strong class="text-emerald-400">6 Connected</strong></span>
+        <a href="../" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-medium">← All Prototypes</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Hero Banner -->
+    <section class="glass rounded-2xl p-6 sm:p-8 mb-8 glow-amber border-amber-500/30">
+      <div class="grid lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
+            <span>AUSTRALIA HIGH-TICKET EDUCATION • FIRST 30-DAY EXECUTION SPRINT</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+            Turn Raw Sales Calls, CRM Funnels & Student Support Into an Autonomous Revenue Engine
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Built specifically for <strong>Ecom Warrior Academy</strong>: instead of generic "AI consulting", this live prototype demonstrates the exact 3 core systems we deploy in your first 30 days using <strong>Claude Code, custom MCP servers, Fathom/Zoom webhooks, and GoHighLevel</strong>.
+          </p>
+        </div>
+        <div class="lg:col-span-4 grid grid-cols-2 gap-3">
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4">
+            <div class="text-xs text-slate-400 uppercase">Projected 90-Day Lift</div>
+            <div class="text-2xl font-extrabold text-emerald-400 mt-1">+$145K AUD</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">From +3.8% closer conversion & automated objection rescue</div>
+          </div>
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4">
+            <div class="text-xs text-slate-400 uppercase">Team Time Reclaimed</div>
+            <div class="text-2xl font-extrabold text-amber-400 mt-1">185 hrs/mo</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Across Sales Managers, Closers & Student Success</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-slate-800/80">
+        <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-active px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-2">
+          <span>1. AI Sales Call Intelligence & Closer Coach</span>
+        </button>
+        <button onclick="switchTab('tab2')" id="btn-tab2" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2.5 rounded-xl text-sm font-medium transition border border-slate-800">
+          <span>2. Executive $10M+ AUD Revenue & Bottleneck Radar</span>
+        </button>
+        <button onclick="switchTab('tab3')" id="btn-tab3" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2.5 rounded-xl text-sm font-medium transition border border-slate-800">
+          <span>3. First 30-Day Claude Code + MCP Roadmap & ROI Calculator</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 1: SALES CALL INTELLIGENCE -->
+    <section id="tab1" class="space-y-6">
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- Left Column: Transcript Input & Scenario Presets -->
+        <div class="lg:col-span-5 glass rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-base text-white">Enrollment Call Transcript Feed</h3>
+              <span class="text-xs text-amber-400 mono">Fathom / Zoom → Claude 3.7 Sonnet</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-4">
+              Select a real-world Ecom Warrior Academy call scenario or paste any closer transcript below to test deterministic + LLM rubric scoring and automatic GoHighLevel follow-up generation.
+            </p>
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <button onclick="loadScenario('spouse')" class="px-2.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-xs font-medium text-amber-300 transition text-left">
+                🔥 Scenario A<br><span class="text-[11px] text-slate-400">Spouse + $6K Cashflow</span>
+              </button>
+              <button onclick="loadScenario('weak')" class="px-2.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-rose-500/40 text-xs font-medium text-rose-300 transition text-left">
+                ⚠️ Scenario B<br><span class="text-[11px] text-slate-400">Closer Pitch-Slap (58%)</span>
+              </button>
+              <button onclick="loadScenario('closed')" class="px-2.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-xs font-medium text-emerald-300 transition text-left">
+                ✅ Scenario C<br><span class="text-[11px] text-slate-400">Elite Closer (92%)</span>
+              </button>
+            </div>
+            <textarea id="transcriptInput" rows="12" class="w-full rounded-xl bg-slate-950 border border-slate-800 p-3.5 text-xs text-slate-200 mono focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+          </div>
+          <button onclick="runCallAudit()" class="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 transition">
+            Run AI Closer Audit & Generate GoHighLevel Payload →
+          </button>
+        </div>
+
+        <!-- Right Column: Real-Time Audit Output -->
+        <div class="lg:col-span-7 space-y-5">
+          <!-- KPI Score Row -->
+          <div class="grid sm:grid-cols-4 gap-3">
+            <div class="glass rounded-xl p-4 border-l-4 border-amber-500">
+              <div class="text-xs text-slate-400">Overall Closer Score</div>
+              <div id="scoreOverall" class="text-2xl font-extrabold text-white mt-1">84 / 100</div>
+              <div id="scoreBadge" class="text-[11px] text-emerald-400 mt-0.5">High-Converting Structure</div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="text-xs text-slate-400">Discovery Depth</div>
+              <div id="scoreDiscovery" class="text-xl font-bold text-amber-400 mt-1">88%</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Pain & 12-mo AUD goal anchored</div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="text-xs text-slate-400">Objection Isolation</div>
+              <div id="scoreObjection" class="text-xl font-bold text-emerald-400 mt-1">85%</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Spouse & capital reframed</div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="text-xs text-slate-400">Closer Talk Ratio</div>
+              <div id="scoreTalkRatio" class="text-xl font-bold text-sky-400 mt-1">46% / 54%</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Target: &lt;50% Closer Talk</div>
+            </div>
+          </div>
+
+          <!-- Detected Objections & Coaching Matrix -->
+          <div class="glass rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-bold text-sm text-white uppercase tracking-wider">Detected Objections, Buying Signals & Closer Coaching</h4>
+              <span id="ghlStagePill" class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">GHL Stage: Follow-Up — Partner Alignment Pack</span>
+            </div>
+            <div id="objectionsContainer" class="space-y-2.5 text-xs"></div>
+          </div>
+
+          <!-- Auto-Generated GoHighLevel Follow-Up & Webhook JSON -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="glass rounded-2xl p-5">
+              <div class="text-xs font-bold text-amber-400 uppercase mb-2">Auto-Drafted Personalized SMS + Email (GHL)</div>
+              <div id="smsDraftBox" class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 leading-relaxed"></div>
+              <div class="mt-3 text-[11px] text-slate-400">
+                ✓ Attaches Australian Supplier Fast-Track PDF + custom calculator link based on prospect's exact objection.
+              </div>
+            </div>
+            <div class="glass rounded-2xl p-5">
+              <div class="text-xs font-bold text-emerald-400 uppercase mb-2 mono">GoHighLevel / Slack MCP Webhook Payload</div>
+              <pre id="webhookJsonBox" class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-emerald-300 mono overflow-x-auto max-h-44"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: EXECUTIVE $10M+ REVENUE & BOTTLENECK RADAR -->
+    <section id="tab2" class="hidden space-y-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs text-slate-400">Monthly Cash Collected (AUD)</div>
+          <div class="text-2xl font-extrabold text-white mt-1">$918,400</div>
+          <div class="text-xs text-emerald-400 mt-1">▲ +14.2% vs. 30-day rolling avg</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs text-slate-400">Calendar Show Rate (Setter → Closer)</div>
+          <div class="text-2xl font-extrabold text-amber-400 mt-1">71.4%</div>
+          <div class="text-xs text-amber-300 mt-1">⚡ AI WhatsApp/SMS pre-call warm-up active</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs text-slate-400">High-Ticket Close Rate (1-Call + 2-Call)</div>
+          <div class="text-2xl font-extrabold text-emerald-400 mt-1">24.8%</div>
+          <div class="text-xs text-slate-400 mt-1">Top closer: 33.1% • Floor closer: 14.2%</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs text-slate-400">Week-1 Student Store Launch Velocity</div>
+          <div class="text-2xl font-extrabold text-sky-400 mt-1">89.2%</div>
+          <div class="text-xs text-emerald-400 mt-1">Refund risk reduced by 41% via AI Mentor</div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 glass rounded-2xl p-6">
+          <h3 class="font-bold text-base text-white mb-4">Closer Leaderboard & Objection Leakage Matrix (Last 14 Days)</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 uppercase">
+                  <th class="pb-3">Closer</th>
+                  <th class="pb-3">Calls Taken</th>
+                  <th class="pb-3">Close %</th>
+                  <th class="pb-3">Avg AI Rubric</th>
+                  <th class="pb-3">Primary Leak Detected by AI</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/70 text-slate-200">
+                <tr>
+                  <td class="py-3.5 font-semibold">Jordan T. (Senior)</td>
+                  <td class="py-3.5 mono">42</td>
+                  <td class="py-3.5 text-emerald-400 font-bold mono">33.3%</td>
+                  <td class="py-3.5 mono">91 / 100</td>
+                  <td class="py-3.5 text-slate-400">None — Benchmark closer for AI training</td>
+                </tr>
+                <tr>
+                  <td class="py-3.5 font-semibold">Liam W.</td>
+                  <td class="py-3.5 mono">38</td>
+                  <td class="py-3.5 text-amber-400 font-bold mono">23.6%</td>
+                  <td class="py-3.5 mono">78 / 100</td>
+                  <td class="py-3.5 text-amber-300">Rushes discovery when prospect mentions "Spouse"</td>
+                </tr>
+                <tr>
+                  <td class="py-3.5 font-semibold">Marcus K.</td>
+                  <td class="py-3.5 mono">39</td>
+                  <td class="py-3.5 text-rose-400 font-bold mono">15.3%</td>
+                  <td class="py-3.5 mono">61 / 100</td>
+                  <td class="py-3.5 text-rose-300">Talk ratio 68% — Monologues curriculum instead of isolating ROI</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 glass rounded-2xl p-6 space-y-3">
+          <h3 class="font-bold text-base text-white mb-2">Live Autonomous AI Anomaly Alerts</h3>
+          <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs">
+            <div class="font-bold text-rose-300">🚨 Closer Leakage Alert (Marcus K.)</div>
+            <p class="text-slate-300 mt-1">5 high-intent leads ($50k+ liquid capital) stalled on "I need to think about it" without a scheduled 48h follow-up call. Auto-triggered GHL Rescue Sequence + alerted Sales Manager in Slack.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs">
+            <div class="font-bold text-amber-300">⚡ Meta Ad Set #14 Lead Quality Shift</div>
+            <p class="text-slate-300 mt-1">Show rate dipped from 74% to 59% on Sydney/Melbourne broad reel #4. AI Setter Agent switched SMS cadence to 2-way voice-note opener (+11% recovery).</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs">
+            <div class="font-bold text-emerald-300">✅ Student Success Milestone</div>
+            <p class="text-slate-300 mt-1">28 new students completed Australian Supplier Onboarding in &lt;72 hours via the 24/7 Curriculum RAG Concierge.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: FIRST 30-DAY CLAUDE CODE + MCP ROADMAP & ROI CALCULATOR -->
+    <section id="tab3" class="hidden space-y-6">
+      <div class="grid lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 space-y-4">
+          <div class="glass rounded-2xl p-5 border-l-4 border-amber-500">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-amber-400 mono">Week 1 (Days 1–7) • Quick-Win Revenue Capture</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">Zero disruption to closers</span>
+            </div>
+            <h4 class="font-bold text-base text-white mt-1">System 1: AI Sales Call Intelligence, Rubric Scorer & GHL Follow-Up Engine</h4>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              Connect Fathom/Zoom recordings → Claude 3.7 API + deterministic Python scorer → GoHighLevel & Slack. Every call gets scored within 90 seconds, managers see exactly which closer missed buying signals, and personalized objection-rescue SMS/Emails are queued automatically.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-5 border-l-4 border-emerald-500">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-emerald-400 mono">Week 2 (Days 8–14) • Show-Rate & Speed-to-Lead</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">+8% to +12% Show Rate</span>
+            </div>
+            <h4 class="font-bold text-base text-white mt-1">System 2: AI Setter Triage & Pre-Call Indoctrination Concierge</h4>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              Qualifies opt-ins via 2-way SMS/IG DM in under 45 seconds, scores financial readiness, and sends tailored Australian student case studies matching the lead's occupation before their strategy call.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-5 border-l-4 border-sky-500">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-sky-400 mono">Week 3 (Days 15–21) • Fulfillment & Retention</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">-65% Support Ticket Load</span>
+            </div>
+            <h4 class="font-bold text-base text-white mt-1">System 3: 24/7 Student Success RAG Mentor & At-Risk Churn Radar</h4>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              Trained on Ecom Warrior Academy's exact modules, SOPs, and coaching call archives. Answers student product-research/Meta-ads questions with timestamped video links and alerts coaches if a new student hasn't logged in for 5 days.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-5 border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-purple-400 mono">Week 4 (Days 22–30) • Executive Visibility</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">Founder Command Center</span>
+            </div>
+            <h4 class="font-bold text-base text-white mt-1">System 4: Custom Claude Code MCP Server across Meta Ads + Stripe + GHL</h4>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              Lets leadership query live attribution, CAC-to-LTV by ad creative, and closer performance in plain English directly inside Claude / Slack with strict role-based security.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive ROI Calculator -->
+        <div class="lg:col-span-5 glass rounded-2xl p-6">
+          <h3 class="font-bold text-base text-white mb-1">Interactive 30-Day ROI Simulator (AUD)</h3>
+          <p class="text-xs text-slate-400 mb-5">Adjust Ecom Warrior Academy's monthly funnel inputs to see conservative first-sprint impact:</p>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300">Qualified Strategy Calls / Month</span>
+                <span id="lblCalls" class="font-bold text-amber-400 mono">320 calls</span>
+              </div>
+              <input id="rngCalls" type="range" min="100" max="800" step="20" value="320" oninput="calcRoi()" class="w-full accent-amber-500" />
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300">Average Program Enrollment Value (AUD)</span>
+                <span id="lblPrice" class="font-bold text-amber-400 mono">$5,500 AUD</span>
+              </div>
+              <input id="rngPrice" type="range" min="3000" max="12000" step="500" value="5500" oninput="calcRoi()" class="w-full accent-amber-500" />
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300">Conservative Close-Rate Lift from AI Call Audit + Rescue</span>
+                <span id="lblLift" class="font-bold text-emerald-400 mono">+3.5%</span>
+              </div>
+              <input id="rngLift" type="range" min="1.0" max="8.0" step="0.5" value="3.5" oninput="calcRoi()" class="w-full accent-emerald-500" />
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-2 mt-4">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Extra Enrollments / Month:</span>
+                <span id="outEnrollments" class="font-bold text-white mono">+11.2 students</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Incremental Monthly Revenue:</span>
+                <span id="outMonthlyRev" class="font-extrabold text-lg text-emerald-400 mono">+$61,600 AUD / mo</span>
+              </div>
+              <div class="flex justify-between pt-2 border-t border-slate-800">
+                <span class="text-slate-400">Phase 1 Fixed-Price Sprint Investment:</span>
+                <span class="font-bold text-amber-400 mono">$1,200 USD (Milestone-Based)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SCENARIOS = {
+      spouse: `Closer: Hey Lachlan, excited to dive in. Why now—what is the main goal for your income over the next 12 months, and what has kept you stuck in your 9-to-5?
+Prospect: Honestly I'm tired of working 50 hours a week in Brisbane with capped pay. How fast can I launch once I'm inside, and do we use Australian suppliers?
+Closer: Great question—we set up your local AU supplier fast-track during Week 1 onboarding so you can launch your first test campaign this week while keeping momentum.
+Prospect: The $6,000 investment is high for my current cash flow, and I also need to talk to my wife tonight before making any decision.
+Closer: I completely understand. Aside from the cash flow, if we solved the payment plan structure together so it fits your monthly budget, would your wife support you building an asset with our ROI milestone guarantee?
+Prospect: Yeah, if we use the split payment plan she'd be on board. Let's get the partner summary and enrollment link ready.`,
+      weak: `Closer: Let me explain all 14 modules of Ecom Warrior Academy for the next twenty minutes because our curriculum has hundreds of videos and templates and weekly coaching calls.
+Prospect: I tried dropshipping before and got burned, plus I work a full-time job with no time. Also what happens after i enroll?
+Closer: Yeah our videos are really good so you can watch them whenever you want. Anyway let me know next month if you want to join.`,
+      closed: `Closer: Welcome Sarah! Before we look at the curriculum, what is the #1 dream outcome for your family in Melbourne over the next 12 months, and why is solving this urgent right now?
+Prospect: I want to replace my $110k corporate salary so I can be home with my kids. How fast can I launch my first store?
+Closer: Love that goal. Our action-taker cohort launches their first validated Australian product test within 14 days during onboarding.
+Prospect: I saw the $5,800 tuition—can I pay in installments so I keep extra working capital for ad spend?
+Closer: Absolutely, we can structure our 3-part installment plan right now so your ad budget stays untouched. Let's open your enrollment link together and book your 1-on-1 kickoff call this week.`
+    };
+
+    function switchTab(tabId) {
+      ['tab1', 'tab2', 'tab3'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+        const btn = document.getElementById('btn-' + id);
+        btn.className = 'bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2.5 rounded-xl text-sm font-medium transition border border-slate-800';
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).className = 'tab-active px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-2';
+    }
+
+    function loadScenario(key) {
+      document.getElementById('transcriptInput').value = SCENARIOS[key];
+      runCallAudit();
+    }
+
+    function runCallAudit() {
+      const raw = document.getElementById('transcriptInput').value.trim();
+      const lines = raw.split('\n').filter(l => l.includes(':'));
+      let closerWords = 0, prospectWords = 0, closerQuestions = 0, deepQuestions = 0;
+      const objections = [];
+      const missedSignals = [];
+
+      lines.forEach((line, idx) => {
+        const [speaker, ...rest] = line.split(':');
+        const text = rest.join(':').trim();
+        const lower = text.toLowerCase();
+        const isCloser = speaker.toLowerCase().includes('closer');
+        const wc = text.split(/\s+/).length;
+        if (isCloser) {
+          closerWords += wc;
+          if (text.includes('?')) {
+            closerQuestions++;
+            if (/(why now|goal|income|stuck|12 months|dream|urgent)/.test(lower)) deepQuestions++;
+          }
+        } else {
+          prospectWords += wc;
+          const nextCloser = lines.slice(idx + 1, idx + 4).filter(l => l.toLowerCase().startsWith('closer:')).join(' ').toLowerCase();
+          const resolved = /(understand|aside from|solved|installment|payment plan|guarantee|together)/.test(nextCloser);
+
+          if (/(\$\d+|expensive|cash flow|installments|tuition)/.test(lower)) {
+            objections.push({
+              cat: 'Price / Cash Flow',
+              quote: text,
+              resolved,
+              tip: 'Isolate tuition vs. ad-spend working capital; anchor split-pay option against 12-month corporate opportunity cost.'
+            });
+          }
+          if (/(wife|husband|partner|spouse)/.test(lower)) {
+            objections.push({
+              cat: 'Spouse / Partner Alignment',
+              quote: text,
+              resolved,
+              tip: 'Never end with "let me know what your partner says"—equip prospect with the 2-page Partner ROI Brief & lock a 24h 3-way check-in.'
+            });
+          }
+          if (/(burned|tried dropshipping|no time|full-time job)/.test(lower)) {
+            objections.push({
+              cat: 'Skepticism / Time Bandwidth',
+              quote: text,
+              resolved,
+              tip: 'Contrast outdated overseas dropshipping vs. Ecom Warrior Academy local Australian supplier framework (45 mins/day).'
+            });
+          }
+          if (/(how fast can i launch|what happens after i enroll)/.test(lower) && !/(onboarding|enroll|link|week 1|14 days)/.test(nextCloser)) {
+            missedSignals.push(text);
+          }
+        }
+      });
+
+      const totalWords = Math.max(closerWords + prospectWords, 1);
+      const closerRatio = Math.round((closerWords / totalWords) * 100);
+      const discoveryScore = Math.min(100, 38 + closerQuestions * 14 + deepQuestions * 18);
+      const resolvedCount = objections.filter(o => o.resolved).length;
+      const objectionScore = objections.length ? Math.round(45 + (resolvedCount / objections.length) * 55) : 90;
+      const talkPenalty = closerRatio > 60 ? Math.round((closerRatio - 60) * 0.9) : 0;
+      const overall = Math.max(25, Math.min(98, Math.round(discoveryScore * 0.4 + objectionScore * 0.6 - talkPenalty)));
+
+      document.getElementById('scoreOverall').textContent = `${overall} / 100`;
+      document.getElementById('scoreDiscovery').textContent = `${discoveryScore}%`;
+      document.getElementById('scoreObjection').textContent = `${objectionScore}%`;
+      document.getElementById('scoreTalkRatio').textContent = `${closerRatio}% / ${100 - closerRatio}%`;
+
+      const badge = document.getElementById('scoreBadge');
+      if (overall >= 80) {
+        badge.textContent = '✅ Elite Closer Execution';
+        badge.className = 'text-[11px] text-emerald-400 mt-0.5';
+      } else {
+        badge.textContent = '⚠️ Coaching & Rescue Triggered';
+        badge.className = 'text-[11px] text-rose-400 mt-0.5';
+      }
+
+      const stage = overall >= 85 && objections.every(o => o.resolved)
+        ? 'Hot Pipeline — Enrollment Link & Split-Pay Sent'
+        : objections.some(o => o.cat.includes('Spouse'))
+        ? 'Follow-Up — Partner Alignment Pack + 24h Callback'
+        : 'Objection Rescue — Manager Review + Case Study Drip';
+
+      document.getElementById('ghlStagePill').textContent = `GHL Stage: ${stage}`;
+
+      const container = document.getElementById('objectionsContainer');
+      container.innerHTML = '';
+      objections.forEach(o => {
+        const pill = o.resolved
+          ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">Resolved on Call</span>`
+          : `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-semibold">Unresolved Leak</span>`;
+        container.innerHTML += `
+          <div class="p-3 rounded-xl bg-slate-950/90 border border-slate-800">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-amber-300">${o.cat}</span>
+              ${pill}
+            </div>
+            <div class="text-slate-300 italic mb-1.5">"${o.quote}"</div>
+            <div class="text-slate-400"><strong class="text-slate-200">AI Closer Coach:</strong> ${o.tip}</div>
+          </div>`;
+      });
+
+      if (missedSignals.length) {
+        container.innerHTML += `
+          <div class="p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200">
+            <strong>🚨 Missed Buying Signal Detected:</strong> Prospect asked <em>"${missedSignals[0]}"</em> without closer anchoring the Week-1 onboarding timeline.
+          </div>`;
+      }
+
+      const primaryObj = objections[0] ? objections[0].cat : 'Fast-Track Launch';
+      const sms = `Hey mate, great speaking today! Put together the exact 90-day Australian supplier roadmap + the 2-page "${primaryObj}" breakdown we covered so you have all the numbers in front of you. Check your email before our quick follow-up tomorrow!`;
+      document.getElementById('smsDraftBox').textContent = sms;
+
+      const payload = {
+        event: "ewa.sales_call.audited",
+        overall_score: overall,
+        closer_talk_ratio_pct: closerRatio,
+        recommended_ghl_stage: stage,
+        unresolved_objections: objections.filter(o => !o.resolved).map(o => o.cat),
+        missed_buying_signals: missedSignals.length,
+        automation_actions: {
+          trigger_ghl_workflow: overall >= 80 ? "wf_partner_fast_track" : "wf_objection_rescue_au",
+          slack_alert_sales_manager: overall < 72
+        }
+      };
+      document.getElementById('webhookJsonBox').textContent = JSON.stringify(payload, null, 2);
+    }
+
+    function calcRoi() {
+      const calls = parseInt(document.getElementById('rngCalls').value, 10);
+      const price = parseInt(document.getElementById('rngPrice').value, 10);
+      const lift = parseFloat(document.getElementById('rngLift').value);
+      document.getElementById('lblCalls').textContent = `${calls} calls`;
+      document.getElementById('lblPrice').textContent = `$${price.toLocaleString()} AUD`;
+      document.getElementById('lblLift').textContent = `+${lift.toFixed(1)}%`;
+
+      const extraStudents = (calls * (lift / 100));
+      const extraRev = Math.round(extraStudents * price);
+      document.getElementById('outEnrollments').textContent = `+${extraStudents.toFixed(1)} students`;
+      document.getElementById('outMonthlyRev').textContent = `+$${extraRev.toLocaleString()} AUD / mo`;
+    }
+
+    // Initialize default view
+    loadScenario('spouse');
+    calcRoi();
+  </script>
+</body>
+</html>

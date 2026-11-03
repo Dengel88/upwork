@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero-Hallucination 90-Appliance AI Production Control Center | Ayman K. — Synndicate AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.7); }
+    .glow-cyan { box-shadow: 0 0 28px rgba(6, 182, 212, 0.18); }
+    .scanline {
+      background: linear-gradient(to bottom, transparent 50%, rgba(6, 182, 212, 0.04) 51%);
+      background-size: 100% 4px;
+    }
+    @keyframes pulseRing {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+    .pulse-lock { animation: pulseRing 2.4s infinite ease-in-out; }
+    @keyframes cameraOrbit {
+      0% { transform: scale(1.0) translate(0px, 0px); }
+      50% { transform: scale(1.045) translate(-8px, -3px); }
+      100% { transform: scale(1.0) translate(0px, 0px); }
+    }
+    .video-motion-active { animation: cameraOrbit 5s infinite ease-in-out; }
+    @keyframes steamRise {
+      0% { transform: translateY(8px) scaleX(0.95); opacity: 0.15; }
+      50% { transform: translateY(-10px) scaleX(1.08); opacity: 0.55; }
+      100% { transform: translateY(-26px) scaleX(0.92); opacity: 0; }
+    }
+    .steam-particle { animation: steamRise 3.2s infinite ease-out; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-cyan-500 selection:text-slate-950">
+
+  <!-- Top Branding Header -->
+  <header class="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-extrabold text-slate-950 text-lg shadow-lg shadow-cyan-500/20">
+          S
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white tracking-tight">Ayman K. | Synndicate AI</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-medium">Lead AI Systems Architect &amp; Generative Media Producer</span>
+          </div>
+          <p class="text-xs text-slate-400">Zero-Hallucination 90-Appliance AI Production Control Center • ComfyUI + IC-Light + Kling 3.0 + n8n Batch Engine</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>QA GATE ACTIVE: SSIM ≥ 0.985 | ΔE &lt; 1.2</span>
+        </div>
+        <button onclick="exportWorkflowJson()" class="px-3.5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs transition flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export ComfyUI + n8n JSON
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- Executive KPI Strip -->
+    <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="glass rounded-xl p-4 border-l-4 border-l-cyan-400">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-medium">Catalog Scope</div>
+        <div class="text-2xl font-extrabold text-white mt-1 mono">90 SKUs</div>
+        <div class="text-xs text-cyan-300 mt-1">100% Geometry &amp; Logo Lock</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-blue-400">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-medium">Total Deliverables</div>
+        <div class="text-2xl font-extrabold text-white mt-1 mono">450 Stills + 90 Videos</div>
+        <div class="text-xs text-blue-300 mt-1">5× 4K Stills + 1× 10s Video / SKU</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-emerald-400">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-medium">Mask Pixel Fidelity</div>
+        <div class="text-2xl font-extrabold text-emerald-400 mt-1 mono" id="topSsimMetric">0.9942 SSIM</div>
+        <div class="text-xs text-slate-300 mt-1">Zero Warped Knobs or LEDs</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-purple-400">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-medium">Turnkey Fixed Price</div>
+        <div class="text-2xl font-extrabold text-white mt-1 mono">$7,800 <span class="text-xs font-normal text-emerald-400">(-22%)</span></div>
+        <div class="text-xs text-purple-300 mt-1">$86.67 / SKU • 60-Day Delivery</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-amber-400 col-span-2 lg:col-span-1">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-medium">Zero-Risk Start</div>
+        <div class="text-2xl font-extrabold text-amber-300 mt-1 mono">$75 Pilot</div>
+        <div class="text-xs text-slate-300 mt-1">1 Full SKU (5 Stills + 10s Video)</div>
+      </div>
+    </section>
+
+    <!-- Main Interactive Workspace: Left = SKU Geometry Lock Viewer | Right = Pipeline Stage Controls & QA Gate -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left 7 Cols: Interactive Appliance Geometry-Lock & Relighting Canvas -->
+      <div class="lg:col-span-7 glass rounded-2xl p-5 glow-cyan flex flex-col justify-between space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold mono">Interactive Pipeline Stage Inspector</span>
+            <h2 class="text-lg font-bold text-white mt-0.5" id="activeSkuTitle">SKU-001: BaristaTouch Dual-Boiler Espresso Machine</h2>
+          </div>
+          <!-- SKU Switcher -->
+          <div class="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+            <button onclick="selectSku(0)" id="skuBtn0" class="px-2.5 py-1.5 rounded-md text-xs font-semibold bg-cyan-500 text-slate-950 transition">SKU-01 Espresso</button>
+            <button onclick="selectSku(1)" id="skuBtn1" class="px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white transition">SKU-14 Washer 9kg</button>
+            <button onclick="selectSku(2)" id="skuBtn2" class="px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white transition">SKU-42 Air Fryer</button>
+          </div>
+        </div>
+
+        <!-- Pipeline Pass Selector Tabs -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="passTabs">
+          <button onclick="setPipelineStage('sam2')" id="stage-sam2" class="p-2.5 rounded-xl border border-slate-700 bg-slate-900/70 text-left hover:border-cyan-500/50 transition">
+            <div class="text-[10px] mono text-cyan-400">STAGE 01</div>
+            <div class="text-xs font-semibold text-white mt-0.5">SAM2 Mask Lock</div>
+          </button>
+          <button onclick="setPipelineStage('controlnet')" id="stage-controlnet" class="p-2.5 rounded-xl border border-slate-700 bg-slate-900/70 text-left hover:border-cyan-500/50 transition">
+            <div class="text-[10px] mono text-cyan-400">STAGE 02</div>
+            <div class="text-xs font-semibold text-white mt-0.5">Canny + Depth</div>
+          </button>
+          <button onclick="setPipelineStage('iclight')" id="stage-iclight" class="p-2.5 rounded-xl border border-slate-700 bg-slate-900/70 text-left hover:border-cyan-500/50 transition">
+            <div class="text-[10px] mono text-cyan-400">STAGE 03</div>
+            <div class="text-xs font-semibold text-white mt-0.5">IC-Light Kitchen</div>
+          </button>
+          <button onclick="setPipelineStage('composite')" id="stage-composite" class="p-2.5 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition">
+            <div class="text-[10px] mono text-cyan-300">STAGE 04 (ACTIVE)</div>
+            <div class="text-xs font-semibold text-white mt-0.5">Pixel-Lock Overlay</div>
+          </button>
+          <button onclick="setPipelineStage('kling')" id="stage-kling" class="p-2.5 rounded-xl border border-slate-700 bg-slate-900/70 text-left hover:border-cyan-500/50 transition col-span-2 sm:col-span-1">
+            <div class="text-[10px] mono text-amber-400">STAGE 05 • 10s</div>
+            <div class="text-xs font-semibold text-white mt-0.5">Kling 3.0 Video</div>
+          </button>
+        </div>
+
+        <!-- Visual Viewport -->
+        <div class="relative rounded-2xl overflow-hidden border border-slate-700/80 bg-slate-950 h-[390px] select-none scanline flex items-center justify-center" id="viewportContainer">
+
+          <!-- Background Lifestyle Environment Layer (Changes based on stage & scene preset) -->
+          <div id="envBackground" class="absolute inset-0 transition-all duration-500" style="background: radial-gradient(circle at 75% 25%, rgba(251, 191, 36, 0.22), rgba(15, 23, 42, 0.92) 65%), linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #090d16 100%);">
+            <!-- Architectural Kitchen Window Grid & Countertop -->
+            <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-950 via-slate-900/95 to-stone-800/40 border-t border-amber-200/20"></div>
+            <!-- Warm Window Rim Light Beams -->
+            <div id="lightingBeam" class="absolute -top-10 right-12 w-72 h-72 bg-amber-300/15 rounded-full blur-3xl pointer-events-none transition-all duration-500"></div>
+            <div class="absolute top-6 left-6 text-xs mono px-2.5 py-1 rounded bg-slate-950/80 border border-slate-700 text-slate-300 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span id="viewportStageBadge">STAGE 04: 4K Kitchen Relight + Deterministic Control-Panel Pixel Lock</span>
+            </div>
+          </div>
+
+          <!-- Steam particles for 10s video mode -->
+          <div id="steamOverlay" class="hidden absolute top-28 left-1/2 -translate-x-1/2 pointer-events-none z-20">
+            <div class="w-16 h-24 rounded-full bg-white/15 blur-xl steam-particle"></div>
+          </div>
+
+          <!-- Interactive SVG Product Rig (Precision Vector CAD + Control Panel Lock Indicators) -->
+          <div id="applianceRig" class="relative z-10 flex flex-col items-center justify-center transition-transform duration-500">
+            <svg id="applianceSvg" width="320" height="290" viewBox="0 0 320 290" class="drop-shadow-[0_24px_35px_rgba(0,0,0,0.85)]">
+              <defs>
+                <linearGradient id="brushedSteel" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e2e8f0" id="steelStop1" />
+                  <stop offset="45%" stop-color="#94a3b8" id="steelStop2" />
+                  <stop offset="100%" stop-color="#475569" id="steelStop3" />
+                </linearGradient>
+                <linearGradient id="icLightRim" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fde68a" stop-opacity="0.55" />
+                  <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.08" />
+                  <stop offset="100%" stop-color="#0f172a" stop-opacity="0.4" />
+                </linearGradient>
+              </defs>
+
+              <!-- Base Countertop Contact Shadow -->
+              <ellipse cx="160" cy="268" rx="118" ry="12" fill="rgba(0,0,0,0.75)" />
+
+              <!-- Main Appliance Chassis -->
+              <rect x="58" y="28" width="204" height="236" rx="16" fill="url(#brushedSteel)" stroke="#cbd5e1" stroke-width="2" id="chassisRect" />
+              <!-- IC-Light Environmental Specular Wrap Overlay -->
+              <rect id="icLightOverlay" x="58" y="28" width="204" height="236" rx="16" fill="url(#icLightRim)" />
+
+              <!-- Top Control Panel Bezel (PIXEL LOCKED ZONE) -->
+              <rect x="70" y="42" width="180" height="62" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" id="controlPanelBox" />
+
+              <!-- Brand Badge / Logo (100% Vector/Pixel Locked) -->
+              <rect x="122" y="49" width="76" height="16" rx="3" fill="#1e293b" stroke="#475569" stroke-width="1" />
+              <text id="brandLogoText" x="160" y="60" text-anchor="middle" fill="#f8fafc" font-family="Inter, sans-serif" font-weight="800" font-size="8.5" letter-spacing="1.8">AERO•BREW</text>
+
+              <!-- Left Rotary Knob -->
+              <g id="knobLeftGroup">
+                <circle cx="96" cy="80" r="14" fill="#334155" stroke="#e2e8f0" stroke-width="2" />
+                <circle cx="96" cy="80" r="9" fill="#0f172a" />
+                <line x1="96" y1="71" x2="96" y2="76" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+              </g>
+
+              <!-- Digital OLED Telemetry Display -->
+              <rect x="122" y="70" width="76" height="24" rx="4" fill="#020617" stroke="#0284c7" stroke-width="1" />
+              <text id="ledTempText" x="160" y="86" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12">93.5°C • 9B</text>
+
+              <!-- Right Rotary Knob -->
+              <g id="knobRightGroup">
+                <circle cx="224" cy="80" r="14" fill="#334155" stroke="#e2e8f0" stroke-width="2" />
+                <circle cx="224" cy="80" r="9" fill="#0f172a" />
+                <line x1="224" y1="71" x2="224" y2="76" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+              </g>
+
+              <!-- Middle Brewing Cavity / Drum Area -->
+              <rect x="76" y="114" width="168" height="122" rx="10" fill="#090d16" stroke="#334155" stroke-width="1.5" />
+              <!-- Grouphead / Appliance Center Feature -->
+              <rect id="centerFeature" x="125" y="114" width="70" height="32" rx="4" fill="#475569" stroke="#94a3b8" stroke-width="1.5" />
+              <rect x="144" y="146" width="32" height="16" rx="3" fill="#1e293b" />
+              <!-- Dual Espresso Streams / Active Appliance Element -->
+              <path id="activeStream" d="M152 162 L152 205 M168 162 L168 205" stroke="#d97706" stroke-width="3" stroke-linecap="round" />
+              <!-- Cup / Vessel on Drip Tray -->
+              <path d="M136 202 L184 202 L178 232 L142 232 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5" />
+              <!-- Stainless Drip Tray Grille -->
+              <rect x="76" y="234" width="168" height="16" rx="4" fill="#64748b" stroke="#cbd5e1" stroke-width="1" />
+
+              <!-- DETERMINISTIC PIXEL-LOCK BOUNDING BOXES (Cyan/Emerald Overlays) -->
+              <g id="pixelLockBoxes" class="pulse-lock">
+                <!-- Control Panel Lock -->
+                <rect x="66" y="38" width="188" height="70" rx="10" fill="none" stroke="#10b981" stroke-width="1.75" stroke-dasharray="5 3" />
+                <rect x="66" y="22" width="142" height="15" rx="3" fill="#065f46" />
+                <text x="72" y="32" fill="#a7f3d0" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600">LOCKED: KNOBS + OLED + LOGO</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Bottom Floating Telemetry Pill inside Viewport -->
+          <div class="absolute bottom-3 inset-x-4 flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-slate-800 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="text-slate-400">Comparison Mode:</span>
+              <button onclick="toggleHallucinationDemo(false)" id="btnLockOn" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold">Synndicate Pixel-Lock (SSIM 0.994)</button>
+              <button onclick="toggleHallucinationDemo(true)" id="btnLockOff" class="px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-rose-300 transition">Naive Unmasked AI (Warped)</button>
+            </div>
+            <div class="mono text-cyan-300" id="liveViewportTelemetry">ΔE: 0.42 | Edge IoU: 0.988 | 240 Frames Locked</div>
+          </div>
+        </div>
+
+        <!-- Stage Technical Explanation Bar -->
+        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-bold mono text-xs shrink-0" id="stageStepNum">04</div>
+          <div>
+            <div class="text-xs font-bold text-white" id="stageDescTitle">Deterministic Pixel-Overlay Composite Pass (Zero Hallucination Guarantee)</div>
+            <p class="text-xs text-slate-300 mt-0.5 leading-relaxed" id="stageDescBody">
+              Diffusion models never touch your silkscreened control labels, rotary dial markings, LED numerals, or brand badge. Our Python/OpenCV node extracts those high-frequency regions from the reference CAD/photo via SAM2 sub-pixel masks and frequency-blends them over the IC-Light relit chassis.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right 5 Cols: Automated Quality Gate Calculator + Scene Relighting Presets -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+
+        <!-- Automated Deterministic Quality Gate Simulator -->
+        <div class="glass rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mono">Automated n8n QA Gate</span>
+              <h3 class="text-base font-bold text-white">Product Mask Pixel-Fidelity Verifier</h3>
+            </div>
+            <span id="qaStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              PASS • READY FOR DELIVERY
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-400">
+            Test how our automated Python validator (`pipeline_validator.py`) rejects any generated frame where product geometry or finish drifts outside tolerances:
+          </p>
+
+          <!-- Sliders -->
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300 font-medium">Masked Product SSIM (Min Gate: <code class="text-cyan-300">0.9850</code>)</span>
+                <span class="mono font-bold text-emerald-400" id="ssimValDisplay">0.9942</span>
+              </div>
+              <input id="ssimSlider" type="range" min="0.920" max="0.999" step="0.001" value="0.994" oninput="updateQaGate()" class="w-full accent-cyan-400 cursor-pointer" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300 font-medium">Surface Color CIE ΔE (Max Gate: <code class="text-cyan-300">1.20</code>)</span>
+                <span class="mono font-bold text-emerald-400" id="deltaEValDisplay">0.42</span>
+              </div>
+              <input id="deltaESlider" type="range" min="0.10" max="3.50" step="0.05" value="0.42" oninput="updateQaGate()" class="w-full accent-cyan-400 cursor-pointer" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300 font-medium">Logo &amp; Control-Panel OCR Confidence (Min: <code class="text-cyan-300">99.0%</code>)</span>
+                <span class="mono font-bold text-emerald-400" id="ocrValDisplay">99.8%</span>
+              </div>
+              <input id="ocrSlider" type="range" min="85.0" max="100.0" step="0.1" value="99.8" oninput="updateQaGate()" class="w-full accent-cyan-400 cursor-pointer" />
+            </div>
+          </div>
+
+          <!-- Environment Lighting Preset Switcher -->
+          <div class="pt-2 border-t border-slate-800">
+            <div class="text-xs font-semibold text-slate-300 mb-2">Lifestyle Scene &amp; HDRI Relighting Preset (5 Angles / SKU):</div>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="setLightingPreset('warm_kitchen')" class="px-2.5 py-2 rounded-lg bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs font-medium hover:bg-amber-500/25 transition">
+                1. Morning Sun Kitchen
+              </button>
+              <button onclick="setLightingPreset('nordic_slate')" class="px-2.5 py-2 rounded-lg bg-sky-500/15 border border-sky-400/40 text-sky-200 text-xs font-medium hover:bg-sky-500/25 transition">
+                2. UK Architectural Slate
+              </button>
+              <button onclick="setLightingPreset('luxury_walnut')" class="px-2.5 py-2 rounded-lg bg-emerald-500/15 border border-emerald-400/40 text-emerald-200 text-xs font-medium hover:bg-emerald-500/25 transition">
+                3. Penthouse Walnut Bar
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Gate Output Log -->
+          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 mono text-[11px] text-slate-300 space-y-1" id="qaGateConsole">
+            <div class="text-emerald-400">[PASS] Masked SSIM 0.9940 ≥ 0.9850 threshold</div>
+            <div class="text-emerald-400">[PASS] Pantone/Albedo ΔE 0.42 ≤ 1.20 threshold</div>
+            <div class="text-emerald-400">[PASS] Control-panel typography OCR 99.8% ≥ 99.0%</div>
+            <div class="text-cyan-300">→ Asset approved for 10s Kling 3.0 Pro motion pass</div>
+          </div>
+        </div>
+
+        <!-- 60-Day / 90-SKU Batch Production & Milestone Calculator -->
+        <div class="glass rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-purple-400 font-semibold mono">Fixed-Price Milestone Planner</span>
+              <h3 class="text-base font-bold text-white">90-SKU Batch Throughput &amp; ROI Calculator</h3>
+            </div>
+            <span class="text-xs mono text-emerald-400 font-semibold">$86.67 / SKU</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+              <label class="text-[11px] text-slate-400 block">Appliance SKUs in Batch</label>
+              <input id="calcSkuCount" type="number" min="1" max="200" value="90" oninput="updateBatchCalculator()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white mono" />
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+              <label class="text-[11px] text-slate-400 block">Lifestyle Stills per SKU</label>
+              <select id="calcStillsPerSku" onchange="updateBatchCalculator()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white mono">
+                <option value="4">4 Stills + 1× 10s Video</option>
+                <option value="5" selected>5 Stills + 1× 10s Video</option>
+                <option value="6">6 Stills + 1× 10s Video</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5 text-center">
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase">Total Stills</div>
+              <div class="text-base font-extrabold text-cyan-300 mono mt-0.5" id="outTotalStills">450</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase">10s Videos</div>
+              <div class="text-base font-extrabold text-amber-300 mono mt-0.5" id="outTotalVideos">90</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase">Fixed Total</div>
+              <div class="text-base font-extrabold text-emerald-400 mono mt-0.5" id="outTotalCost">$7,800</div>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-slate-400 leading-relaxed">
+            Includes <strong class="text-white">Milestone 1 ($75 Paid 1-SKU Pilot)</strong> delivered in 72 hours so your team verifies exact control-panel, knob, and logo fidelity before scaling to Batches 1–4.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5-Milestone Delivery Roadmap & ComfyUI + n8n JSON Architecture -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-7 glass rounded-2xl p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold mono">60-Day Execution Schedule</span>
+            <h3 class="text-lg font-bold text-white">Deliverable-Based Fixed-Price Milestones ($7,800 Total)</h3>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 mono">10.5 SKUs / Week Velocity</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 uppercase">
+                <th class="py-2.5 pr-3">Milestone Phase</th>
+                <th class="py-2.5 px-3">SKUs</th>
+                <th class="py-2.5 px-3">Deliverables</th>
+                <th class="py-2.5 px-3">Schedule</th>
+                <th class="py-2.5 pl-3 text-right">Fixed Price</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/70 text-slate-200">
+              <tr class="bg-amber-500/5">
+                <td class="py-3 pr-3 font-semibold text-amber-300">M1: Paid 1-SKU Pilot (Zero-Risk Proof)</td>
+                <td class="py-3 px-3 mono">1 SKU</td>
+                <td class="py-3 px-3">5× 4K Stills + 1× 10s Video</td>
+                <td class="py-3 px-3 mono text-slate-400">Days 1–3</td>
+                <td class="py-3 pl-3 text-right font-bold mono text-amber-300">$75</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-3 font-semibold">M2: Batch 1 — Kitchen Majors</td>
+                <td class="py-3 px-3 mono">22 SKUs</td>
+                <td class="py-3 px-3">110× 4K Stills + 22× 10s Videos</td>
+                <td class="py-3 px-3 mono text-slate-400">Days 4–17</td>
+                <td class="py-3 pl-3 text-right font-bold mono">$1,925</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-3 font-semibold">M3: Batch 2 — Countertop &amp; Espresso</td>
+                <td class="py-3 px-3 mono">23 SKUs</td>
+                <td class="py-3 px-3">115× 4K Stills + 23× 10s Videos</td>
+                <td class="py-3 px-3 mono text-slate-400">Days 18–31</td>
+                <td class="py-3 pl-3 text-right font-bold mono">$1,950</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-3 font-semibold">M4: Batch 3 — Laundry &amp; Home Care</td>
+                <td class="py-3 px-3 mono">22 SKUs</td>
+                <td class="py-3 px-3">110× 4K Stills + 22× 10s Videos</td>
+                <td class="py-3 px-3 mono text-slate-400">Days 32–45</td>
+                <td class="py-3 pl-3 text-right font-bold mono">$1,925</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-3 font-semibold">M5: Batch 4 — Climate, Air &amp; Final Handover</td>
+                <td class="py-3 px-3 mono">22 SKUs</td>
+                <td class="py-3 px-3">110× 4K Stills + 22× 10s Videos</td>
+                <td class="py-3 px-3 mono text-slate-400">Days 46–60</td>
+                <td class="py-3 pl-3 text-right font-bold mono">$1,925</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ComfyUI + n8n Batch Workflow JSON Inspector -->
+      <div class="lg:col-span-5 glass rounded-2xl p-6 flex flex-col justify-between space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mono">Automation Bonus Included</span>
+            <h3 class="text-lg font-bold text-white">ComfyUI + n8n Batch Orchestration</h3>
+          </div>
+          <button onclick="copyWorkflowSnippet()" id="copyJsonBtn" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs mono text-cyan-300 border border-slate-700 transition">
+            Copy JSON
+          </button>
+        </div>
+
+        <pre id="workflowJsonPreview" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] mono text-cyan-200 overflow-x-auto max-h-60 leading-relaxed">{
+  "pipeline": "Synndicate_90_Appliance_Zero_Hallucination",
+  "segmentation": "SAM2_Hiera_Large + BiRefNet_2048px",
+  "geometry_lock": ["ControlNet_Depth_v2 (0.96)", "Canny_Pro (0.94)"],
+  "relighting": "IC-Light_v2_HDRI_Specular_Pass",
+  "pixel_composite_lock": {
+    "regions": ["rotary_knobs", "oled_display", "brand_badge"],
+    "blend": "frequency_separation_exact_albedo",
+    "allow_diffusion_overwrite": false
+  },
+  "video_10s_pass": {
+    "engine": "Kling_3.0_Pro_API + Weavy_Planar_Lock",
+    "duration_sec": 10,
+    "fps": 24,
+    "rigid_appliance_mask_freeze": true
+  }
+}</pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SKUS = [
+      {
+        title: "SKU-001: BaristaTouch Dual-Boiler Espresso Machine",
+        brand: "AERO•BREW",
+        led: "93.5°C • 9B",
+        ssim: 0.9942,
+        deltaE: 0.42,
+        colors: ["#e2e8f0", "#94a3b8", "#475569"]
+      },
+      {
+        title: "SKU-014: EcoSteam 9kg Smart Front-Load Washing Machine",
+        brand: "ECO•STEAM",
+        led: "1400RPM • 40°",
+        ssim: 0.9918,
+        deltaE: 0.58,
+        colors: ["#64748b", "#475569", "#1e293b"]
+      },
+      {
+        title: "SKU-042: AeroCrisp 9.5L Dual-Zone Digital Air Fryer",
+        brand: "AERO•CRISP",
+        led: "200°C • 18M",
+        ssim: 0.9951,
+        deltaE: 0.36,
+        colors: ["#334155", "#1e293b", "#0f172a"]
+      }
+    ];
+
+    const STAGES = {
+      sam2: {
+        num: "01",
+        badge: "STAGE 01: SAM2 + BiRefNet 2048px Sub-Pixel Layer Segmentation",
+        title: "Sub-Pixel Alpha Masking & Control-Panel Isolation",
+        body: "Extracts separate pixel-accurate alpha masks for the outer chassis, rotary dials, digital display, and brand logo before any environment generation occurs."
+      },
+      controlnet: {
+        num: "02",
+        badge: "STAGE 02: Dual ControlNet (Depth-Anything-V2 + Canny Edge Lock)",
+        title: "3D Perspective & Silhouette Geometry Lock",
+        body: "Locks 100% of the appliance edges and depth contours while generating contemporary UK/European kitchen interiors at matching focal lengths."
+      },
+      iclight: {
+        num: "03",
+        badge: "STAGE 03: IC-Light Studio & Natural Window HDRI Relighting",
+        title: "Physically Accurate Specular Reflections & Countertop Shadows",
+        body: "Wraps realistic ambient daylight and countertop reflections across brushed steel and glass without shifting the true Pantone/sRGB base finish (ΔE < 1.2)."
+      },
+      composite: {
+        num: "04",
+        badge: "STAGE 04: 4K Kitchen Relight + Deterministic Control-Panel Pixel Lock",
+        title: "Deterministic Pixel-Overlay Composite Pass (Zero Hallucination Guarantee)",
+        body: "Diffusion models never touch your silkscreened control labels, rotary dial markings, LED numerals, or brand badge. Our Python node re-projects the exact sharp reference pixels over the relit chassis."
+      },
+      kling: {
+        num: "05",
+        badge: "STAGE 05: Kling 3.0 Pro / Seedance 10-Second Hero Commercial Video",
+        title: "10-Second Orbital Camera Motion + Rigid-Body Appliance Lock",
+        body: "Generates smooth 24fps cinematic camera push-ins and natural steam/lighting dynamics while freezing the appliance geometry so logos and controls remain razor-sharp for all 10 seconds."
+      }
+    };
+
+    function selectSku(idx) {
+      const sku = SKUS[idx];
+      document.getElementById("activeSkuTitle").textContent = sku.title;
+      document.getElementById("brandLogoText").textContent = sku.brand;
+      document.getElementById("ledTempText").textContent = sku.led;
+      document.getElementById("steelStop1").setAttribute("stop-color", sku.colors[0]);
+      document.getElementById("steelStop2").setAttribute("stop-color", sku.colors[1]);
+      document.getElementById("steelStop3").setAttribute("stop-color", sku.colors[2]);
+
+      document.getElementById("ssimSlider").value = sku.ssim;
+      document.getElementById("deltaESlider").value = sku.deltaE;
+      updateQaGate();
+
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById("skuBtn" + i);
+        btn.className = i === idx
+          ? "px-2.5 py-1.5 rounded-md text-xs font-semibold bg-cyan-500 text-slate-950 transition"
+          : "px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white transition";
+      });
+    }
+
+    function setPipelineStage(stageKey) {
+      const info = STAGES[stageKey];
+      document.getElementById("viewportStageBadge").textContent = info.badge;
+      document.getElementById("stageStepNum").textContent = info.num;
+      document.getElementById("stageDescTitle").textContent = info.title;
+      document.getElementById("stageDescBody").textContent = info.body;
+
+      ["sam2", "controlnet", "iclight", "composite", "kling"].forEach(k => {
+        const btn = document.getElementById("stage-" + k);
+        if (k === stageKey) {
+          btn.className = "p-2.5 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition";
+        } else {
+          btn.className = "p-2.5 rounded-xl border border-slate-700 bg-slate-900/70 text-left hover:border-cyan-500/50 transition";
+        }
+      });
+
+      const rig = document.getElementById("applianceRig");
+      const steam = document.getElementById("steamOverlay");
+      const lockBoxes = document.getElementById("pixelLockBoxes");
+      const chassis = document.getElementById("chassisRect");
+
+      rig.classList.remove("video-motion-active");
+      steam.classList.add("hidden");
+      chassis.setAttribute("stroke-dasharray", "none");
+
+      if (stageKey === "sam2") {
+        lockBoxes.classList.remove("hidden");
+        chassis.setAttribute("stroke", "#22d3ee");
+        chassis.setAttribute("stroke-dasharray", "6 3");
+      } else if (stageKey === "controlnet") {
+        lockBoxes.classList.add("hidden");
+        chassis.setAttribute("stroke", "#38bdf8");
+      } else if (stageKey === "iclight") {
+        lockBoxes.classList.add("hidden");
+        chassis.setAttribute("stroke", "#fde68a");
+      } else if (stageKey === "composite") {
+        lockBoxes.classList.remove("hidden");
+        chassis.setAttribute("stroke", "#cbd5e1");
+      } else if (stageKey === "kling") {
+        lockBoxes.classList.remove("hidden");
+        rig.classList.add("video-motion-active");
+        steam.classList.remove("hidden");
+      }
+    }
+
+    function toggleHallucinationDemo(isNaive) {
+      const logo = document.getElementById("brandLogoText");
+      const led = document.getElementById("ledTempText");
+      const lockBoxes = document.getElementById("pixelLockBoxes");
+      const btnOn = document.getElementById("btnLockOn");
+      const btnOff = document.getElementById("btnLockOff");
+      const telemetry = document.getElementById("liveViewportTelemetry");
+
+      if (isNaive) {
+        logo.textContent = "A3R0~BRW";
+        logo.setAttribute("transform", "skewX(-14)");
+        led.textContent = "9?5°C • 8B";
+        lockBoxes.classList.add("hidden");
+        telemetry.textContent = "FAIL: SSIM 0.912 | ΔE: 2.85 (Knobs & Logo Warped)";
+        telemetry.className = "mono text-rose-400 font-semibold";
+        btnOff.className = "px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-semibold";
+        btnOn.className = "px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-emerald-300 transition";
+        document.getElementById("ssimSlider").value = 0.912;
+        document.getElementById("deltaESlider").value = 2.85;
+        document.getElementById("ocrSlider").value = 86.4;
+      } else {
+        logo.textContent = "AERO•BREW";
+        logo.removeAttribute("transform");
+        led.textContent = "93.5°C • 9B";
+        lockBoxes.classList.remove("hidden");
+        telemetry.textContent = "ΔE: 0.42 | Edge IoU: 0.988 | 240 Frames Locked";
+        telemetry.className = "mono text-cyan-300";
+        btnOn.className = "px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold";
+        btnOff.className = "px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-rose-300 transition";
+        document.getElementById("ssimSlider").value = 0.994;
+        document.getElementById("deltaESlider").value = 0.42;
+        document.getElementById("ocrSlider").value = 99.8;
+      }
+      updateQaGate();
+    }
+
+    function setLightingPreset(preset) {
+      const env = document.getElementById("envBackground");
+      if (preset === "warm_kitchen") {
+        env.style.background = "radial-gradient(circle at 75% 25%, rgba(251, 191, 36, 0.25), rgba(15, 23, 42, 0.92) 65%), linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #090d16 100%)";
+      } else if (preset === "nordic_slate") {
+        env.style.background = "radial-gradient(circle at 25% 20%, rgba(56, 189, 248, 0.24), rgba(15, 23, 42, 0.94) 65%), linear-gradient(135deg, #0f172a 0%, #1e293b 70%, #020617 100%)";
+      } else {
+        env.style.background = "radial-gradient(circle at 60% 30%, rgba(16, 185, 129, 0.20), rgba(15, 23, 42, 0.95) 65%), linear-gradient(135deg, #27272a 0%, #18181b 65%, #090d16 100%)";
+      }
+    }
+
+    function updateQaGate() {
+      const ssim = parseFloat(document.getElementById("ssimSlider").value);
+      const deltaE = parseFloat(document.getElementById("deltaESlider").value);
+      const ocr = parseFloat(document.getElementById("ocrSlider").value);
+
+      document.getElementById("ssimValDisplay").textContent = ssim.toFixed(4);
+      document.getElementById("deltaEValDisplay").textContent = deltaE.toFixed(2);
+      document.getElementById("ocrValDisplay").textContent = ocr.toFixed(1) + "%";
+      document.getElementById("topSsimMetric").textContent = ssim.toFixed(4) + " SSIM";
+
+      const passSsim = ssim >= 0.985;
+      const passDe = deltaE <= 1.20;
+      const passOcr = ocr >= 99.0;
+      const allPass = passSsim && passDe && passOcr;
+
+      const badge = document.getElementById("qaStatusBadge");
+      if (allPass) {
+        badge.textContent = "PASS • READY FOR DELIVERY";
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+      } else {
+        badge.textContent = "REJECTED • AUTO RE-COMPOSITE";
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold mono bg-rose-500/20 text-rose-300 border border-rose-500/40";
+      }
+
+      const logLines = [
+        `<div class="${passSsim ? 'text-emerald-400' : 'text-rose-400'}">[${passSsim ? 'PASS' : 'FAIL'}] Masked SSIM ${ssim.toFixed(4)} ${passSsim ? '≥' : '<'} 0.9850 threshold</div>`,
+        `<div class="${passDe ? 'text-emerald-400' : 'text-rose-400'}">[${passDe ? 'PASS' : 'FAIL'}] Pantone/Albedo ΔE ${deltaE.toFixed(2)} ${passDe ? '≤' : '>'} 1.20 threshold</div>`,
+        `<div class="${passOcr ? 'text-emerald-400' : 'text-rose-400'}">[${passOcr ? 'PASS' : 'FAIL'}] Control-panel typography OCR ${ocr.toFixed(1)}% ${passOcr ? '≥' : '<'} 99.0%</div>`,
+        `<div class="${allPass ? 'text-cyan-300' : 'text-amber-300'}">→ ${allPass ? 'Asset approved for 10s Kling 3.0 Pro motion pass' : 'n8n routed frame back to deterministic pixel-lock node'}</div>`
+      ];
+      document.getElementById("qaGateConsole").innerHTML = logLines.join("");
+    }
+
+    function updateBatchCalculator() {
+      const skus = Math.max(1, parseInt(document.getElementById("calcSkuCount").value || "90", 10));
+      const stillsPerSku = parseInt(document.getElementById("calcStillsPerSku").value, 10);
+      const totalStills = skus * stillsPerSku;
+      const totalVideos = skus;
+      const totalCost = Math.round(skus * 86.6667);
+
+      document.getElementById("outTotalStills").textContent = totalStills.toLocaleString();
+      document.getElementById("outTotalVideos").textContent = totalVideos.toLocaleString();
+      document.getElementById("outTotalCost").textContent = "$" + totalCost.toLocaleString();
+    }
+
+    function copyWorkflowSnippet() {
+      const text = document.getElementById("workflowJsonPreview").textContent;
+      navigator.clipboard.writeText(text);
+      const btn = document.getElementById("copyJsonBtn");
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy JSON"; }, 1800);
+    }
+
+    function exportWorkflowJson() {
+      const text = document.getElementById("workflowJsonPreview").textContent;
+      const blob = new Blob([text], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "synndicate_90_appliance_comfy_n8n_workflow.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

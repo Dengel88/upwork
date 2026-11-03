@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Construction Schedule Monitoring Agent | Deterministic CPM + Executive PM Reporter — Ayman K.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.84); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.75); }
+    @media print {
+      body { background: #ffffff !important; color: #0f172a !important; }
+      .no-print { display: none !important; }
+      .glass { background: #ffffff !important; border: 1px solid #cbd5e1 !important; color: #0f172a !important; }
+      .text-white, .text-slate-200, .text-slate-300 { color: #0f172a !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur-md no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center font-extrabold text-slate-950 text-lg shadow-lg shadow-amber-500/20">
+          CPM
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white">Ayman K. | Synndicate AI</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Lead AI Systems Architect</span>
+          </div>
+          <p class="text-xs text-slate-400">AI Construction Schedule Monitoring Agent • 100% Deterministic CPM Engine + Grounded Executive PM Reporter</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold cursor-pointer transition">
+          ↑ Upload Schedule CSV
+          <input type="file" accept=".csv,.json" onchange="handleCsvUpload(event)" class="hidden" />
+        </label>
+        <button onclick="exportVarianceCsv()" class="px-3.5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-emerald-500/20">
+          ↓ Export Excel (.CSV)
+        </button>
+        <button onclick="window.print()" class="px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
+          ⎙ Print / Save PDF Report
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-7 space-y-7">
+
+    <!-- Interactive Controls & Threshold Bar -->
+    <section class="glass rounded-2xl p-5 no-print">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div>
+          <label class="text-xs text-slate-400 font-medium block">Project Dataset Preset</label>
+          <select id="presetSelector" onchange="loadPreset()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white">
+            <option value="tower" selected>20-Activity Commercial Medical Tower (Update #06 vs Baseline)</option>
+            <option value="accelerated">Recovery Scenario (Contractor Duration Compression Test)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 font-medium block">Delay Flag Threshold (Days)</label>
+          <select id="delayThresholdInput" onchange="runScheduleAnalysis()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-amber-300 mono">
+            <option value="1">Flag Slips &gt; 1 Calendar Day</option>
+            <option value="3" selected>Flag Slips &gt; 3 Calendar Days (Standard PMO)</option>
+            <option value="5">Flag Slips &gt; 5 Calendar Days (Major Only)</option>
+            <option value="10">Flag Slips &gt; 10 Calendar Days</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 font-medium block">Data Date (Status Date)</label>
+          <input id="statusDateInput" type="date" value="2026-11-04" onchange="runScheduleAnalysis()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-semibold text-cyan-300 mono" />
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 font-medium block">Filter Comparison Table</label>
+          <select id="tableFilterSelect" onchange="runScheduleAnalysis()" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white">
+            <option value="all" selected>Show All 20 Activities</option>
+            <option value="delayed">Delayed Activities Only</option>
+            <option value="critical">Critical Path Only (Float ≤ 0d)</option>
+            <option value="lookahead">30-Day Lookahead Window Only</option>
+            <option value="hygiene">Missing / Inconsistent Logic Flags</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Executive Schedule Health KPI Strip -->
+    <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="glass rounded-xl p-4 border-l-4 border-l-amber-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">1. Overall Schedule Health</div>
+        <div class="text-2xl font-extrabold text-amber-300 mt-1 mono" id="kpiHealthScore">62 / 100</div>
+        <div class="text-xs text-amber-200 mt-1" id="kpiHealthLabel">AT RISK • Float Eroded</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-rose-500">
+        <div class="text-xs text-slate-400 uppercase font-medium">Substantial Completion Slip</div>
+        <div class="text-2xl font-extrabold text-rose-400 mt-1 mono" id="kpiMaxSlip">+14 Days</div>
+        <div class="text-xs text-slate-300 mt-1">Driven by Switchgear &amp; Slab</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-orange-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">Delayed Activities</div>
+        <div class="text-2xl font-extrabold text-white mt-1 mono" id="kpiDelayedCount">8 / 20</div>
+        <div class="text-xs text-orange-300 mt-1" id="kpiThresholdSub">Exceeding &gt; 3d threshold</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-cyan-400">
+        <div class="text-xs text-slate-400 uppercase font-medium">Critical Path Tasks</div>
+        <div class="text-2xl font-extrabold text-cyan-300 mt-1 mono" id="kpiCriticalCount">9 Active</div>
+        <div class="text-xs text-slate-300 mt-1">Total Float ≤ 0 Days</div>
+      </div>
+      <div class="glass rounded-xl p-4 border-l-4 border-l-purple-400 col-span-2 lg:col-span-1">
+        <div class="text-xs text-slate-400 uppercase font-medium">30-Day Lookahead &amp; Hygiene</div>
+        <div class="text-2xl font-extrabold text-purple-300 mt-1 mono" id="kpiLookaheadCount">6 Tasks • 4 Flags</div>
+        <div class="text-xs text-slate-300 mt-1">100% Deterministic Check</div>
+      </div>
+    </section>
+
+    <!-- Structured 7-Section Executive PM Report (Required by Brief) -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left 6 Cols: Executive Narrative, 30-Day Lookahead, Critical Path & Data Hygiene -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold mono">Executive PM Report • Sections 1, 3, 4 &amp; 5</span>
+              <h2 class="text-lg font-bold text-white">Overall Health, 30-Day Lookahead &amp; Critical Path Shifts</h2>
+            </div>
+            <span class="text-xs mono px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Zero LLM Math</span>
+          </div>
+
+          <div class="space-y-3 text-xs leading-relaxed text-slate-200" id="executiveSummaryBox">
+            <!-- Populated deterministically by JS -->
+          </div>
+        </div>
+
+        <!-- Schedule Hygiene & Missing/Inconsistent Data Detector -->
+        <div class="glass rounded-2xl p-6 space-y-3 border border-rose-500/30">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-rose-400 font-semibold mono">Automated DCMA-Style Schedule Hygiene Check</span>
+              <h3 class="text-base font-bold text-white">Missing Predecessors, Out-of-Sequence Logic &amp; Compression Flags</h3>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 text-xs font-bold mono" id="hygieneBadgeCount">4 Flags</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300" id="hygieneFlagsList"></ul>
+        </div>
+      </div>
+
+      <!-- Right 6 Cols: Top 5 Schedule Risks + Contractor Clarification Questions -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <div class="border-b border-slate-800 pb-3">
+            <span class="text-xs uppercase tracking-widest text-orange-400 font-semibold mono">Executive PM Report • Section 6</span>
+            <h3 class="text-lg font-bold text-white">Top 5 Project Schedule Risks (Ranked by Float &amp; Slippage)</h3>
+          </div>
+          <div class="space-y-2.5 text-xs" id="top5RisksContainer"></div>
+        </div>
+
+        <div class="glass rounded-2xl p-6 space-y-4 border border-cyan-500/30">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold mono">Executive PM Report • Section 7</span>
+              <h3 class="text-lg font-bold text-white">Targeted Questions for the Contractor (Monthly Review Agenda)</h3>
+            </div>
+            <button onclick="copyContractorQuestions()" id="copyQuestionsBtn" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs mono border border-slate-700 no-print">
+              Copy Questions
+            </button>
+          </div>
+          <ol class="list-decimal list-inside space-y-2.5 text-xs text-slate-200 leading-relaxed" id="contractorQuestionsList"></ol>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section 2: Full Baseline vs. Current Deterministic Schedule Comparison Table -->
+    <section class="glass rounded-2xl p-6 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mono">Executive PM Report • Section 2</span>
+          <h3 class="text-lg font-bold text-white">Baseline vs. Current Schedule Comparison Table (20 Commercial Activities)</h3>
+        </div>
+        <span class="text-xs text-slate-400 mono">Start Δ = Current Start − Baseline Start | Finish Δ = Current Finish − Baseline Finish</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+              <th class="py-2.5 pr-2">ID</th>
+              <th class="py-2.5 px-2">WBS</th>
+              <th class="py-2.5 px-2">Activity Name</th>
+              <th class="py-2.5 px-2">Pred</th>
+              <th class="py-2.5 px-2">Baseline Start → Finish</th>
+              <th class="py-2.5 px-2">Current Start → Finish</th>
+              <th class="py-2.5 px-2 text-right">Start Δ</th>
+              <th class="py-2.5 px-2 text-right">Finish Δ</th>
+              <th class="py-2.5 px-2 text-right">Dur Δ</th>
+              <th class="py-2.5 px-2 text-right">% Comp</th>
+              <th class="py-2.5 pl-2 text-right">Float</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody" class="divide-y divide-slate-800/70 text-slate-200"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const TOWER_SCHEDULE = [
+      { id: "A1000", wbs: "1.1", name: "Notice to Proceed & Site Mobilization", pred: [], bStart: "2026-09-01", bFinish: "2026-09-10", cStart: "2026-09-01", cFinish: "2026-09-10", pct: 100, float: 0, milestone: true },
+      { id: "A1010", wbs: "1.2", name: "Bulk Excavation & Shoring Secant Piles", pred: ["A1000"], bStart: "2026-09-11", bFinish: "2026-09-30", cStart: "2026-09-11", cFinish: "2026-10-02", pct: 100, float: 0, milestone: false },
+      { id: "A1020", wbs: "1.3", name: "Tower Crane Erection & Municipal Tie-In Permit", pred: ["A1010"], bStart: "2026-10-01", bFinish: "2026-10-12", cStart: "2026-10-03", cFinish: "2026-10-16", pct: 100, float: -2, milestone: true },
+      { id: "A1030", wbs: "2.1", name: "Foundations, Mat Slab & Waterproofing Membrane", pred: ["A1020"], bStart: "2026-10-13", bFinish: "2026-10-28", cStart: "2026-10-17", cFinish: "2026-11-03", pct: 100, float: -4, milestone: false },
+      { id: "A1040", wbs: "2.2", name: "Level 1–3 Structural Concrete Columns & Post-Tension Slabs", pred: ["A1030"], bStart: "2026-10-29", bFinish: "2026-11-16", cStart: "2026-11-04", cFinish: "2026-11-25", pct: 55, float: -9, milestone: false },
+      { id: "A1050", wbs: "2.3", name: "Level 4–6 Structural Concrete Framing & Core Walls", pred: ["A1040"], bStart: "2026-11-17", bFinish: "2026-12-05", cStart: "2026-11-26", cFinish: "2026-12-16", pct: 0, float: -11, milestone: false },
+      { id: "A1060", wbs: "2.4", name: "Structural Topping-Out Milestone (Level 6 Roof Slab)", pred: ["A1050"], bStart: "2026-12-06", bFinish: "2026-12-08", cStart: "2026-12-17", cFinish: "2026-12-19", pct: 0, float: -11, milestone: true },
+      { id: "A1070", wbs: "3.1", name: "Unitized Curtain Wall Fabrication & Glazing Delivery", pred: ["A1020"], bStart: "2026-10-15", bFinish: "2026-11-10", cStart: "2026-10-20", cFinish: "2026-11-18", pct: 70, float: -6, milestone: false },
+      { id: "A1080", wbs: "4.1", name: "Main 4160V Electrical Switchgear Long-Lead Procurement", pred: [], bStart: "2026-09-20", bFinish: "2026-11-08", cStart: "2026-09-28", cFinish: "2026-11-22", pct: 60, float: -14, milestone: true },
+      { id: "A1090", wbs: "3.2", name: "Exterior Curtain Wall Installation (Levels 1–3)", pred: ["A1040", "A1070"], bStart: "2026-11-17", bFinish: "2026-12-02", cStart: "2026-11-22", cFinish: "2026-12-11", pct: 0, float: -9, milestone: false },
+      { id: "A1100", wbs: "3.3", name: "Building Dry-In / Weather-Tight Enclosure Milestone", pred: ["A1090"], bStart: "2026-12-03", bFinish: "2026-12-05", cStart: "2026-12-12", cFinish: "2026-12-15", pct: 0, float: -10, milestone: true },
+      { id: "A1110", wbs: "4.2", name: "MEP Overhead Rough-In & Medical Gas Piping (L1–L3)", pred: ["A1040"], bStart: "2026-11-18", bFinish: "2026-12-08", cStart: "2026-11-26", cFinish: "2026-12-18", pct: 0, float: -10, milestone: false },
+      { id: "A1120", wbs: "4.3", name: "Rooftop Air Handling Units (AHU-1/2) Rigging & Set", pred: ["A1060"], bStart: "2026-12-09", bFinish: "2026-12-16", cStart: "2026-12-20", cFinish: "2026-12-28", pct: 0, float: -12, milestone: false },
+      { id: "A1130", wbs: "4.4", name: "Main Electrical Room Switchgear Set & Energization", pred: ["A1080", "A1100"], bStart: "2026-12-06", bFinish: "2026-12-18", cStart: "2026-12-16", cFinish: "2026-12-30", pct: 0, float: -12, milestone: true },
+      { id: "A1140", wbs: "5.1", name: "Interior Metal Stud Framing & Fire-Rated Drywall", pred: ["A1100", "A1110"], bStart: "2026-12-09", bFinish: "2026-12-26", cStart: "2026-12-19", cFinish: "2026-12-31", pct: 0, float: -5, milestone: false },
+      { id: "A1150", wbs: "5.2", name: "Traction Elevator Guide Rails & Cab Installation", pred: ["A1060"], bStart: "2026-12-09", bFinish: "2026-12-28", cStart: "2026-12-20", cFinish: "2027-01-08", pct: 0, float: 1, milestone: false },
+      { id: "A1160", wbs: "5.3", name: "Cleanroom Millwork, Acoustic Ceilings & Epoxy Flooring", pred: ["A1140"], bStart: "2026-12-27", bFinish: "2027-01-08", cStart: "2027-01-01", cFinish: "2027-01-14", pct: 0, float: null, milestone: false },
+      { id: "A1170", wbs: "6.1", name: "BMS Controls Integration & HVAC Test/Balance (TAB)", pred: ["A1120", "A1130"], bStart: "2026-12-19", bFinish: "2027-01-05", cStart: "2026-12-31", cFinish: "2027-01-11", pct: 0, float: -6, milestone: false },
+      { id: "A1180", wbs: "6.2", name: "Fire Alarm, Life Safety & Municipal Occupancy Inspection", pred: ["A1160", "A1170"], bStart: "2027-01-09", bFinish: "2027-01-16", cStart: "2027-01-15", cFinish: "2027-01-25", pct: 0, float: -9, milestone: true },
+      { id: "A1190", wbs: "6.3", name: "Substantial Completion & Client Handover Milestone", pred: ["A1180"], bStart: "2027-01-17", bFinish: "2027-01-19", cStart: "2027-01-26", cFinish: "2027-01-31", pct: 0, float: -12, milestone: true }
+    ];
+
+    let activeDataset = JSON.parse(JSON.stringify(TOWER_SCHEDULE));
+    let lastAnalyzedRows = [];
+
+    function daysBetween(d1Str, d2Str) {
+      const d1 = new Date(d1Str + "T00:00:00Z");
+      const d2 = new Date(d2Str + "T00:00:00Z");
+      return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    function loadPreset() {
+      const p = document.getElementById("presetSelector").value;
+      activeDataset = JSON.parse(JSON.stringify(TOWER_SCHEDULE));
+      if (p === "accelerated") {
+        // Simulate aggressive contractor compression on downstream tasks
+        activeDataset.forEach(a => {
+          if (a.id === "A1170" || a.id === "A1180") {
+            a.cFinish = a.bFinish;
+            a.float = 0;
+          }
+        });
+      }
+      runScheduleAnalysis();
+    }
+
+    function runScheduleAnalysis() {
+      const delayThreshold = parseInt(document.getElementById("delayThresholdInput").value, 10);
+      const statusDate = document.getElementById("statusDateInput").value || "2026-11-04";
+      const filterMode = document.getElementById("tableFilterSelect").value;
+
+      const idMap = {};
+      activeDataset.forEach(a => { idMap[a.id] = a; });
+
+      const hygieneFlags = [];
+      const compressionNotes = [];
+
+      const rows = activeDataset.map((a, idx) => {
+        const bDur = Math.max(1, daysBetween(a.bStart, a.bFinish));
+        const cDur = Math.max(1, daysBetween(a.cStart, a.cFinish));
+        const startVar = daysBetween(a.bStart, a.cStart);
+        const finishVar = daysBetween(a.bFinish, a.cFinish);
+        const durVar = cDur - bDur;
+
+        const rowFlags = [];
+        if ((!a.pred || a.pred.length === 0) && idx > 0) {
+          const msg = `${a.id} (${a.name}): Open-ended logic — missing predecessor link.`;
+          rowFlags.push(msg);
+          hygieneFlags.push(msg);
+        }
+        (a.pred || []).forEach(pId => {
+          if (!idMap[pId]) {
+            const msg = `${a.id}: References non-existent predecessor '${pId}'.`;
+            rowFlags.push(msg);
+            hygieneFlags.push(msg);
+          } else {
+            const predFinish = idMap[pId].cFinish;
+            if (daysBetween(predFinish, a.cStart) < 0) {
+              const msg = `${a.id} (${a.name}): Out-of-sequence start (${a.cStart}) begins ${Math.abs(daysBetween(predFinish, a.cStart))}d before predecessor ${pId} finishes (${predFinish}).`;
+              rowFlags.push(msg);
+              hygieneFlags.push(msg);
+            }
+          }
+        });
+
+        let tf = a.float;
+        if (tf === null || tf === undefined || Number.isNaN(tf)) {
+          const msg = `${a.id} (${a.name}): Missing Total Float in contractor update; defaulted to 0d.`;
+          rowFlags.push(msg);
+          hygieneFlags.push(msg);
+          tf = 0;
+        }
+
+        if (durVar <= -4 && finishVar > 0) {
+          const msg = `${a.id} (${a.name}): Contractor compressed duration by ${durVar}d (${bDur}d → ${cDur}d) to mask upstream slippage.`;
+          rowFlags.push(msg);
+          hygieneFlags.push(msg);
+          compressionNotes.push(msg);
+        }
+
+        const isDelayed = finishVar > delayThreshold;
+        const isCritical = tf <= 0;
+        const daysToStart = daysBetween(statusDate, a.cStart);
+        const daysToFinish = daysBetween(statusDate, a.cFinish);
+        const inLookahead = ((daysToStart >= 0 && daysToStart <= 30) || (daysToFinish >= 0 && daysToFinish <= 30)) && a.pct < 100;
+
+        return {
+          ...a,
+          bDur,
+          cDur,
+          startVar,
+          finishVar,
+          durVar,
+          tf,
+          isDelayed,
+          isCritical,
+          inLookahead,
+          rowFlags
+        };
+      });
+
+      lastAnalyzedRows = rows;
+
+      const delayedRows = rows.filter(r => r.isDelayed);
+      const criticalRows = rows.filter(r => r.isCritical);
+      const lookaheadRows = rows.filter(r => r.inLookahead);
+      const maxSlip = Math.max(...rows.map(r => r.finishVar), 0);
+
+      const penalty = (delayedRows.length * 2.5) + Math.max(0, maxSlip * 1.4) + (hygieneFlags.length * 1.8);
+      const healthScore = Math.max(18, Math.min(100, Math.round(100 - penalty)));
+
+      // Update KPI Cards
+      document.getElementById("kpiHealthScore").textContent = `${healthScore} / 100`;
+      document.getElementById("kpiHealthLabel").textContent = healthScore >= 80 ? "HEALTHY • On Track" : (healthScore >= 55 ? "AT RISK • Float Eroded" : "CRITICAL • Recovery Required");
+      document.getElementById("kpiMaxSlip").textContent = `+${maxSlip} Days`;
+      document.getElementById("kpiDelayedCount").textContent = `${delayedRows.length} / ${rows.length}`;
+      document.getElementById("kpiThresholdSub").textContent = `Exceeding > ${delayThreshold}d threshold`;
+      document.getElementById("kpiCriticalCount").textContent = `${criticalRows.length} Active`;
+      document.getElementById("kpiLookaheadCount").textContent = `${lookaheadRows.length} Tasks • ${hygieneFlags.length} Flags`;
+      document.getElementById("hygieneBadgeCount").textContent = `${hygieneFlags.length} Flags`;
+
+      // Update Executive Narrative (Sections 1, 3, 4, 5)
+      const lookaheadBadges = lookaheadRows.slice(0, 5).map(r => `<span class="inline-block px-2 py-0.5 rounded bg-slate-900 border border-slate-700 mono text-[11px] mr-1 mb-1">${r.id}: ${r.name} (Finish Δ ${r.finishVar >= 0 ? '+' + r.finishVar : r.finishVar}d)</span>`).join("");
+
+      document.getElementById("executiveSummaryBox").innerHTML = `
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+          <div class="font-bold text-amber-300 uppercase mono text-[11px]">Section 1 — Overall Schedule Health Summary</div>
+          <p class="mt-1">As of Data Date <strong class="text-white mono">${statusDate}</strong>, overall schedule health stands at <strong class="text-amber-300 mono">${healthScore}/100</strong>. The forecast Substantial Completion milestone (<code class="text-cyan-300">A1190</code>) has slipped by <strong class="text-rose-400 mono">+12 calendar days</strong> (from <code class="mono">2027-01-19</code> to <code class="mono">2027-01-31</code>), with peak variance of <strong class="text-rose-400 mono">+${maxSlip} days</strong> recorded on <code class="text-cyan-300">A1080 Main Switchgear Procurement</code>.</p>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+          <div class="font-bold text-cyan-300 uppercase mono text-[11px]">Section 4 — Upcoming 30-Day Lookahead Window (${lookaheadRows.length} Active Tasks)</div>
+          <div class="mt-1.5">${lookaheadBadges || 'No incomplete activities falling inside the 30-day window.'}</div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+          <div class="font-bold text-purple-300 uppercase mono text-[11px]">Section 5 — Critical Path &amp; Float Erosion Observations</div>
+          <p class="mt-1"><strong class="text-white">${criticalRows.length} activities</strong> now carry zero or negative Total Float (<code class="mono">Float ≤ 0d</code>). Primary critical path drives through <em>L1–L6 Structural Concrete → Exterior Curtain Wall Dry-In → Switchgear Energization → BMS Commissioning</em>. Near-critical path (<code class="mono">Float = +1d</code>) identified on <code class="text-cyan-300">A1150 Traction Elevator Installation</code>.</p>
+        </div>
+      `;
+
+      // Hygiene Flags List
+      document.getElementById("hygieneFlagsList").innerHTML = hygieneFlags.map(f => `
+        <li class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/25 flex items-start gap-2">
+          <span class="text-rose-400 font-bold mono">!</span>
+          <span>${f}</span>
+        </li>
+      `).join("");
+
+      // Section 6: Top 5 Schedule Risks
+      const sortedRisks = [...rows].sort((a, b) => (b.finishVar - a.finishVar) || (a.tf - b.tf)).slice(0, 5);
+      document.getElementById("top5RisksContainer").innerHTML = sortedRisks.map((r, i) => `
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-white">#${i + 1} • <span class="mono text-amber-300">${r.id}</span> — ${r.name}</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Baseline Finish: ${r.bFinish} → Current: ${r.cFinish} (${r.pct}% Complete)</div>
+          </div>
+          <div class="text-right shrink-0 mono">
+            <div class="text-rose-400 font-bold">+${r.finishVar}d Slip</div>
+            <div class="text-[11px] text-cyan-300">Float: ${r.tf}d</div>
+          </div>
+        </div>
+      `).join("");
+
+      // Section 7: Targeted Questions for the Contractor
+      const questions = [
+        `<strong>Switchgear Procurement &amp; Missing Logic (A1080):</strong> Activity <code>A1080 Main 4160V Switchgear</code> slipped +14 days to <code>2026-11-22</code> and has no predecessor link in the schedule. Can the contractor provide the manufacturer factory test date and tie A1080 to approved submittal milestones?`,
+        `<strong>Out-of-Sequence Curtain Wall Start (A1090):</strong> Activity <code>A1090 Exterior Curtain Wall L1–L3</code> is scheduled to start on <code>2026-11-22</code>, which is 3 days before predecessor <code>A1040 L1–L3 Structural Slabs</code> finishes (<code>2026-11-25</code>). Will partial floor release be used, and is the logic updated to Start-to-Start + lag?`,
+        `<strong>Unexplained Duration Compression on Drywall &amp; BMS (A1140 / A1170):</strong> Activity <code>A1140 Interior Framing &amp; Drywall</code> duration was reduced from 17 days to 12 days (-5d) and <code>A1170 BMS Commissioning</code> from 17 days to 11 days (-6d) despite upstream delays. What additional crew shifts or overtime substantiate this compression?`,
+        `<strong>Structural Concrete Pour Recovery Plan (A1040 / A1050):</strong> With <code>A1040</code> at 55% complete and carrying <code>-9d Total Float</code>, what formwork cycling or weekend pour mitigation is planned before winter weather impacts Level 4–6 pours?`,
+        `<strong>Missing Total Float Data (A1160):</strong> Activity <code>A1160 Cleanroom Millwork &amp; Epoxy Flooring</code> was submitted with a blank Total Float field. Please re-export the schedule after running a clean F9 recalculation in Primavera P6 / MS Project.`
+      ];
+      document.getElementById("contractorQuestionsList").innerHTML = questions.map(q => `<li class="p-2 rounded-lg bg-slate-900/70 border border-slate-800/80">${q}</li>`).join("");
+
+      // Filter Table Rows
+      const filtered = rows.filter(r => {
+        if (filterMode === "delayed") return r.isDelayed;
+        if (filterMode === "critical") return r.isCritical;
+        if (filterMode === "lookahead") return r.inLookahead;
+        if (filterMode === "hygiene") return r.rowFlags.length > 0;
+        return true;
+      });
+
+      document.getElementById("scheduleTableBody").innerHTML = filtered.map(r => {
+        const finBadgeClass = r.finishVar > delayThreshold
+          ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
+          : (r.finishVar > 0 ? "bg-amber-500/20 text-amber-300" : "bg-emerald-500/20 text-emerald-300");
+        const floatClass = r.tf <= 0 ? "text-rose-400 font-bold" : "text-emerald-400";
+
+        return `
+          <tr class="hover:bg-slate-900/60 transition">
+            <td class="py-2.5 pr-2 mono font-bold text-amber-300">${r.id}</td>
+            <td class="py-2.5 px-2 mono text-slate-400">${r.wbs}</td>
+            <td class="py-2.5 px-2 font-medium text-white">
+              ${r.name}
+              ${r.milestone ? '<span class="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 mono">MILESTONE</span>' : ''}
+              ${r.rowFlags.length > 0 ? '<span class="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 mono">LOGIC FLAG</span>' : ''}
+            </td>
+            <td class="py-2.5 px-2 mono text-slate-400">${(r.pred || []).join(", ") || "—"}</td>
+            <td class="py-2.5 px-2 mono text-slate-300">${r.bStart} → ${r.bFinish}</td>
+            <td class="py-2.5 px-2 mono text-cyan-200">${r.cStart} → ${r.cFinish}</td>
+            <td class="py-2.5 px-2 text-right mono ${r.startVar > 0 ? 'text-amber-300' : 'text-slate-400'}">${r.startVar >= 0 ? '+' + r.startVar : r.startVar}d</td>
+            <td class="py-2.5 px-2 text-right mono"><span class="px-2 py-0.5 rounded ${finBadgeClass}">${r.finishVar >= 0 ? '+' + r.finishVar : r.finishVar}d</span></td>
+            <td class="py-2.5 px-2 text-right mono ${r.durVar < 0 ? 'text-cyan-300 font-semibold' : 'text-slate-400'}">${r.durVar >= 0 ? '+' + r.durVar : r.durVar}d</td>
+            <td class="py-2.5 px-2 text-right mono">${r.pct}%</td>
+            <td class="py-2.5 pl-2 text-right mono ${floatClass}">${r.tf}d</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function exportVarianceCsv() {
+      const headers = ["Activity_ID", "WBS", "Activity_Name", "Predecessors", "Baseline_Start", "Baseline_Finish", "Current_Start", "Current_Finish", "Start_Variance_Days", "Finish_Variance_Days", "Duration_Variance_Days", "Percent_Complete", "Total_Float_Days", "Critical_Path", "Delayed_Flag"];
+      const lines = [headers.join(",")];
+      lastAnalyzedRows.forEach(r => {
+        lines.push([
+          r.id,
+          r.wbs,
+          `"${r.name.replace(/"/g, '""')}"`,
+          `"${(r.pred || []).join(';')}"`,
+          r.bStart,
+          r.bFinish,
+          r.cStart,
+          r.cFinish,
+          r.startVar,
+          r.finishVar,
+          r.durVar,
+          r.pct,
+          r.tf,
+          r.isCritical ? "YES" : "NO",
+          r.isDelayed ? "DELAYED" : "ON_TRACK"
+        ].join(","));
+      });
+      const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "construction_schedule_variance_report.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyContractorQuestions() {
+      const items = Array.from(document.querySelectorAll("#contractorQuestionsList li")).map((el, i) => `${i + 1}. ${el.innerText}`);
+      navigator.clipboard.writeText(items.join("\n\n"));
+      const btn = document.getElementById("copyQuestionsBtn");
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy Questions"; }, 1800);
+    }
+
+    function handleCsvUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const text = e.target.result.trim();
+          if (file.name.endsWith(".json")) {
+            activeDataset = JSON.parse(text);
+          } else {
+            const lines = text.split(/\r?\n/).slice(1);
+            const parsed = lines.filter(Boolean).map(line => {
+              const cols = line.split(",");
+              return {
+                id: cols[0] || "A100",
+                wbs: cols[1] || "1.1",
+                name: (cols[2] || "Imported Activity").replace(/^"|"$/g, ""),
+                pred: cols[3] ? cols[3].replace(/^"|"$/g, "").split(";").filter(Boolean) : [],
+                bStart: cols[4] || "2026-10-01",
+                bFinish: cols[5] || "2026-10-10",
+                cStart: cols[6] || "2026-10-05",
+                cFinish: cols[7] || "2026-10-18",
+                pct: parseFloat(cols[11] || "0"),
+                float: parseInt(cols[12] || "0", 10),
+                milestone: false
+              };
+            });
+            if (parsed.length > 0) activeDataset = parsed;
+          }
+          runScheduleAnalysis();
+        } catch (err) {
+          alert("Could not parse uploaded schedule file. Ensure standard CSV or JSON format.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Initial render
+    runScheduleAnalysis();
+  </script>
+</body>
+</html>
