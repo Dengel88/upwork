@@ -1,29 +1,27 @@
-# Upwork Proposal — Ultra-Realistic 15-Second Video (Personalised Prints Product — UK)
+Interactive side-by-side comparison I built for your Etsy print brief (click "Mode B: 15s Etsy Print Unwrapping" at the top):
+https://dengel88.github.io/upwork/storytelling-ads-en-ar/
 
-**Live Interactive Zero-Warp Print Compositing Showcase (Select "Mode B" at top):** https://dengel88.github.io/upwork/storytelling-ads-en-ar/
-**GitHub Repository:** https://github.com/Dengel88/upwork/tree/main/storytelling-ads-en-ar
+Hi,
 
----
+I looked at your Google Drive product mockups. Here is my honest technical assessment and approach to your three questions:
 
-## Direct Answers to Your 3 Screening Questions
+1. Relevant examples & visual proof:
+Please open the link above and click "Mode B: 15s Etsy Print Unwrapping" at the top:
+https://dengel88.github.io/upwork/storytelling-ads-en-ar/
+I built an interactive comparison there showing what happens when you run a personalised print through pure AI video vs. a hybrid planar-tracked composite.
 
-### 1. Portfolio / Visual Proof of Product Fidelity
-Please open the interactive showcase I built specifically for your brief (**Mode B** inside https://dengel88.github.io/upwork/storytelling-ads-en-ar/). You can toggle side-by-side between **Pure AI Video (which melts fine serif fonts and line-art)** and **Our Hybrid Planar-Tracked Composite (100% vector-sharp custom names, dates, and illustrations)**.
+2. My honest approach, tools, and whether to include faces:
+- Can pure AI do this without looking AI or warping the print? No. If you feed your framed mockup directly into Kling, Runway, or Veo, the diffusion model re-renders the pixels on every frame. Fine serif text, names, dates, and delicate line art will shimmer or slightly melt, which immediately screams "AI" to Etsy shoppers.
+- Should we include faces? I strongly recommend a hands-only scene (or at most an out-of-focus warm shoulder/chin in the background). Close-up AI emotional reactions on faces are the #1 giveaway of generated video, whereas natural hands untying a ribbon and folding back crisp tissue paper in soft morning window light look 100% real and keep the viewer's eyes on the gift.
+- How I guarantee 0% warping on your print (Hybrid Pipeline):
+  1. I generate the realistic UK living room / coffee table scene and the hands unwrapping a real wooden frame using Nano Banana Pro + Kling 3.0 Pro, keeping a clean tracking surface inside the frame.
+  2. In Mocha Pro and After Effects, I 4-corner planar-track your exact original high-res print file onto the moving frame, then composite real glass reflection, paper texture, thumb shadow occlusion, and shallow depth of field over it. Your artwork, font, and frame never touch AI diffusion, so they stay 100% identical to your product from start to finish.
 
-### 2. Which AI Tools & Post-Production Workflow Will You Use to Ensure the Artwork Does NOT Warp?
-When you feed a finished personalised print directly into an image-to-video model (Kling, Runway, Sora, Veo), temporal diffusion re-synthesizes every pixel as the camera moves—causing fine typography, dates, and custom illustrations to shimmer or melt.
+3. Price, turnaround time, and revisions:
+- Fixed Price: $180 for the finished 15-second video (includes both the 1:1 square 1080x1080 Etsy version and the 9:16 vertical version, plus the reusable After Effects project file so we can easily swap in your other print designs later).
+- Paid Test: Happy to do a 3-to-4 second paid test clip using one of your Google Drive mockups for $40 so you can verify the realism and print sharpness first.
+- Turnaround time: 48 hours for the test clip; 3 days for the full 15-second video.
+- Revisions: 2 full revision rounds included.
 
-To guarantee **100% pixel-perfect print accuracy** while keeping the video warm, tactile, and ultra-realistic, I use a **2-Layer Hybrid VFX Pipeline**:
-1. **Layer 1 — AI Lifestyle & Natural Hands Plate (`Nano Banana Pro` + `Kling 3.0 Pro`):** We generate the cosy UK home environment, satin ribbon / kraft tissue-paper unwrapping, and natural 5-finger human hands holding a solid oak frame with a clean tracking-marker insert.
-2. **Layer 2 — 4-Corner Planar Tracking & Optical Glass Composite (`Mocha Pro` + `After Effects`):** We track your **exact, unmodified high-resolution print PNG/PDF** onto the moving frame with sub-pixel accuracy. Finally, we composite realistic glass reflection sweep, natural thumb shadow occlusion over the frame edge, and shallow depth-of-field (`50mm f/1.8`) so the print looks physically photographed inside the frame—with **zero AI distortion on your artwork**.
-
-### 3. Proposed 15-Second Gifting Concept (3 Shots × 5 Seconds) & Fixed-Price Deliverable
-- **Shot 1 (0:00–0:05) — Tactile Unwrapping Anticipation:** Warm morning window light in a stylish UK flat; hands untie the ribbon and fold back crisp tissue paper to reveal the corner of the wooden frame.
-- **Shot 2 (0:05–0:10) — The Hero Print Reveal (Planar-Tracked):** Hands lift the framed personalised print toward the lens; a soft natural light reflection sweeps across the glass while every custom letter and line-art detail remains 100% razor-sharp.
-- **Shot 3 (0:10–0:15) — Emotional Reaction & Mantelpiece Styling:** Softly out-of-focus warm smile in the background as the framed print is placed on a shelf beside eucalyptus—delivered in both **9:16 (Reels/TikTok)** and **4:5 (Etsy Listing Video / Meta Feed)**.
-
-### Fixed-Price Per-Deliverable Quote (Outcome-Guaranteed)
-- **Complete 15-Second Ultra-Realistic Personalised Print Video (9:16 + 4:5 Masters + Reusable After Effects Smart-Object Template so you can swap future print PNGs in 1 click):** **$195 USD Fixed-Price** (72-hour turnaround, including 2 rounds of fine-tuning).
-
-**Ayman K.**
-Lead AI Systems Architect & Generative Media Producer | Synndicate AI
+Best,
+Ayman

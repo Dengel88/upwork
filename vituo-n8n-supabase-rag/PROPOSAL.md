@@ -1,26 +1,21 @@
-VITUO — Live Diagnostic & Native n8n Handover Hub built for your stack: https://dengel88.github.io/upwork/vituo-n8n-supabase-rag/
+VITUO
 
-Hi there,
+Live diagnostic hub and native n8n JSON templates I put together for your stack:
+https://dengel88.github.io/upwork/vituo-n8n-supabase-rag/
 
-Your stack—**n8n Cloud + OpenAI (`gpt-4o-mini` / `text-embedding-3-small`) + Supabase (`pgvector`) + Google Workspace (Gmail, Calendar, Drive)**—is a setup we deploy and debug every week. Because your project is already ~85% built, you don't need someone experimenting on the clock; you need a fast, surgical finish using **100% native n8n nodes** so your team can easily maintain it.
+Hi,
 
-I put together an interactive **VITUO Diagnostic & Handover Hub** (including importable native n8n JSON templates and the exact Supabase `match_documents` SQL patch) so you can see our troubleshooting approach immediately:
-👉 **https://dengel88.github.io/upwork/vituo-n8n-supabase-rag/**
+I work with this exact setup (n8n Cloud, GPT-4o-mini, Supabase pgvector, and Google Workspace APIs) regularly. Since your workflows are already mostly built, I can jump into your n8n Cloud and Supabase accounts today, fix the remaining bugs using native nodes only, test everything end-to-end, and write clear handover notes.
 
----
+You can check the link above to see a similar native n8n + Supabase RAG + Gmail/Calendar architecture I built and how I document workflows for clients.
 
-### How I Will Finish Your Remaining 15% & Test End-to-End (Fixed-Price $30)
+Here is what I usually check and fix first on this stack:
 
-1. **Stabilize Supabase `pgvector` RAG Retrieval & Drive Ingestion:**
-   - Verify the `public.documents` table (`vector(1536)` for `text-embedding-3-small`) and patch the `match_documents(query_embedding, match_count, filter)` RPC signature so n8n's native **Supabase Vector Store** tool retrieves chunks reliably with metadata filtering.
-   - Add a native **Supabase Delete** pre-step (`metadata->>file_id=eq.{{$json.id}}`) before Drive re-indexing so updated Google Docs/PDFs never create duplicate embeddings.
-2. **Replace Any Brittle Custom Code Nodes with Native n8n Nodes:**
-   - Connect the native **n8n AI Agent (`Tools Agent`)** directly to **OpenAI Chat Model (`gpt-4o-mini`)**, **Supabase Vector Store Tool**, **Google Calendar Tool** (using native `$fromAI()` parameters with explicit `America/Argentina/Buenos_Aires` ISO-8601 offsets), and **Gmail Tool** (with `-from:me` loop protection and thread-ID locking).
-3. **End-to-End Live Testing & Clean Handover Documentation:**
-   - Run full live verification across Drive ingestion, RAG citation accuracy, Calendar booking, and Gmail thread replies, and deliver a concise **Maintenance & Credentials Handover Guide** (you can already preview and download the template inside the live link above).
+1. Supabase pgvector retrieval: making sure the `public.documents` vector dimensions (1536 for `text-embedding-3-small`) and the `match_documents(query_embedding, match_count, filter)` RPC function match what n8n's native Supabase Vector Store node expects, plus adding a pre-delete step by `file_id` before re-indexing Drive files so you don't get duplicate chunks.
+2. Native n8n AI Agent and Google tools: replacing any fragile custom Code nodes with native n8n nodes (`Tools Agent`, `Supabase Vector Store`, `Google Calendar`, `Gmail`, `Google Drive`), adding `-from:me` filters on Gmail triggers to prevent reply loops, and locking the timezone offset on Calendar tool calls.
+3. Short maintenance docs: a simple 1-page guide per workflow explaining what each node group does, how to re-authenticate Google OAuth if a token expires, and how to test changes safely.
 
-I am happy to complete this for your exact **$30 Fixed-Price** budget as a single turnkey milestone and can jump into your n8n Cloud workspace today to wrap it up within 24 hours.
+I'm good with the $30 fixed price for the whole task and can have it tested and documented within 24 hours after NDA and access.
 
-Best regards,  
-**Ayman K.**  
-Lead AI Systems Architect | Synndicate AI
+Best,
+Ayman

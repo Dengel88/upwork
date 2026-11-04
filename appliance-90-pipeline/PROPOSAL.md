@@ -1,43 +1,31 @@
-Live Interactive 90-Appliance Production Control Center (Built for your brief): https://dengel88.github.io/upwork/appliance-90-pipeline/
+Live interactive 90-SKU pipeline prototype I built for your brief:
+https://dengel88.github.io/upwork/appliance-90-pipeline/
 
-Hi there,
+Hi,
 
-The single biggest failure mode when generating AI lifestyle images and 10-second product videos for **90 household appliances** is "detail drift"—where diffusion models slightly melt rotary knobs, blur silkscreened control-panel text, shift brushed-steel/matte colors, or warp brand logos during camera movement.
+The main challenge with generating 4 to 6 lifestyle photos and a 10-second video across 90 household appliances is keeping the physical product details intact. If you run raw appliance photos through standard image-to-video or diffusion models, rotary knobs warp, LED displays blur, and printed logos shift as the camera moves.
 
-To show you exactly how we eliminate that risk across all **450–540 lifestyle stills and 90 × 10-second videos**, I built a live interactive **Zero-Hallucination 90-Appliance AI Production Control Center** for your team to test right now:
-👉 **https://dengel88.github.io/upwork/appliance-90-pipeline/**
+I put together an interactive prototype at the link above to show how I solve this using an automated ComfyUI + n8n + Kling 3.0 workflow.
 
----
+How our pipeline keeps every control panel, logo, and finish accurate across 90 products:
 
-### How We Keep Every Knob, Display, Logo & Finish 100% Accurate across 90 SKUs
+1. Exact product mask separation (SAM2 + BiRefNet): We isolate the appliance body, control dials, displays, and brand badges into locked alpha masks before generating the kitchen or utility room scene.
+2. Geometry-locked environments (FLUX.1-dev + Dual ControlNet Depth/Canny): We generate realistic UK/European home interiors around the exact product perspective so proportions never change.
+3. Natural relighting (IC-Light): Countertop shadows and reflections wrap onto stainless steel, glass, and matte plastic while preserving the real product color (CIE Delta-E under 1.2).
+4. Deterministic pixel-lock composite pass: Before final export, our script composites the original sharp control-panel text, buttons, and logo back over the relit chassis. AI never overwrites your brand markings.
+5. 10-second camera motion (Kling 3.0 Pro / Seedance + planar tracking): Smooth camera pushes and subtle background motion (steam, natural window light) while keeping the appliance geometry locked across all frames.
 
-Instead of prompting one product at a time by hand, we run an automated **ComfyUI + n8n + Weavy/Kling 3.0 hybrid pipeline**:
+Fixed-Price Proposal: $7,800 total ($86.67 per SKU for all 90 products)
 
-1. **Sub-Pixel Masking & Layer Separation (`SAM2 + BiRefNet 2048px`):**
-   We isolate the appliance chassis, glass doors, rotary dials, LED displays, and brand badges into locked alpha masks before any AI generation touches the scene.
-2. **Geometry-Locked Scene Generation (`FLUX.1-dev + Dual ControlNet Depth/Canny`):**
-   We generate realistic contemporary UK/European kitchens, laundry rooms, and countertop settings around the exact product perspective—zero distortion to proportions or dimensions.
-3. **Studio & Natural Relighting (`IC-Light + Specular Reflection Pass`):**
-   Realistic countertop shadows and ambient reflections wrap naturally onto stainless steel, chrome, and matte surfaces while locking the true reference color (`CIE Delta-E < 1.2`).
-4. **Deterministic Pixel-Overlay Composite Pass (Zero Warped Controls/Logos):**
-   Before final export, our Python/OpenCV node re-composites the original sharp control-panel typography, icons, and brand logo over the relit chassis (`Masked SSIM >= 0.985`). Diffusion never overwrites your brand markings or buttons.
-5. **10-Second Commercial Video (`Kling 3.0 Pro / Seedance + Planar Track Lock`):**
-   We animate smooth cinematic camera pushes and subtle environmental motion (espresso steam, warm sunlight shifts, ambient kitchen depth) while rigid-body locking the appliance geometry so nothing morphs across all 240 frames.
+Because our n8n + ComfyUI batch workflow handles masking, relighting, and QA checks automatically, I can deliver all 90 products (450+ 4K lifestyle images and 90 x 10s videos) within your 2-month timeline for $7,800 fixed price, broken into clear milestones:
 
----
+- Milestone 1 (Paid 1-SKU Pilot - $75, Days 1-3): Send 1 appliance photo. I will deliver 5 lifestyle images + 1 x 10s video so you can check the sharpness of the controls, logos, and lighting before starting the full batch.
+- Milestone 2 (Batch 1: 22 products - $1,925, Days 4-17): 110 lifestyle images + 22 x 10s videos.
+- Milestone 3 (Batch 2: 23 products - $1,950, Days 18-31): 115 lifestyle images + 23 x 10s videos.
+- Milestone 4 (Batch 3: 22 products - $1,925, Days 32-45): 110 lifestyle images + 22 x 10s videos.
+- Milestone 5 (Batch 4: 22 products - $1,925, Days 46-60): 110 lifestyle images + 22 x 10s videos + ComfyUI/n8n workflow files.
 
-### Fixed-Price Milestone Structure ($7,800 Total — $86.67 / SKU, 22% Under Budget)
+Feel free to send over one product photo and I can run a test sample for you right away.
 
-Because our **n8n + ComfyUI batch automation** handles mask extraction, relighting passes, and automated QA checks in parallel, we can deliver the entire 90-product catalog within your **60-day window** at a predictable **Fixed-Price of $7,800** (`$86.67 per complete SKU package` of 5 high-res lifestyle images + 1 × 10s video), structured into clear, deliverable-based milestones:
-
-- **Milestone 1 — Paid 1-SKU Pilot ($75 | Days 1–3):** Send us 1 appliance from your catalog. We deliver **5 × 4K lifestyle images + 1 × 10s HD/4K video** so you can verify our 100% detail accuracy on knobs, logos, and finishes before committing to the full batch.
-- **Milestone 2 — Batch 1: 22 Appliances ($1,925 | Days 4–17):** 110 lifestyle stills + 22 × 10s videos (QA-verified & delivered in organized SKU folders).
-- **Milestone 3 — Batch 2: 23 Appliances ($1,950 | Days 18–31):** 115 lifestyle stills + 23 × 10s videos.
-- **Milestone 4 — Batch 3: 22 Appliances ($1,925 | Days 32–45):** 110 lifestyle stills + 22 × 10s videos.
-- **Milestone 5 — Batch 4: Final 22 Appliances + Full Archive ($1,925 | Days 46–60):** 110 lifestyle stills + 22 × 10s videos + master ComfyUI/n8n presets for future SKU launches.
-
-Send over **1 product reference photo** today and I will run it through our pipeline so you can inspect the exact control-panel sharpness and lighting quality firsthand.
-
-Best regards,  
-**Ayman K.**  
-Lead AI Systems Architect & Generative Media Producer | Synndicate AI
+Best,
+Ayman
