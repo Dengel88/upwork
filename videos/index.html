@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayman K. | Synndicate AI - Commercial & Product Video Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans p-6 md:p-12">
+  <div class="max-w-5xl mx-auto space-y-10">
+    <header class="border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="text-xs uppercase tracking-widest text-amber-400 font-semibold mb-1">Ayman K. | Synndicate AI</div>
+        <h1 class="text-3xl font-bold text-white">AI Commercial & Product Video Showcase</h1>
+        <p class="text-slate-400 text-sm mt-1">End-to-End Generative Video Production, Product Geometry Locking & Multi-Agent Pipelines</p>
+      </div>
+      <a href="../appliance-90-pipeline/" class="inline-flex items-center px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-sm transition">
+        Open 90-Appliance Pipeline Demo &rarr;
+      </a>
+    </header>
+
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <div>
+          <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">Showcase 01 - Neuroclip Studio & Synndicate AI (English)</span>
+          <h2 class="text-xl font-bold text-white mt-2">Synndicate AI / Neuroclip Studio - Full English Brand & Pipeline Film (1:34)</h2>
+          <p class="text-slate-400 text-sm">Multi-shot character & visual continuity, cinematic lighting, custom sound design, and English voiceover.</p>
+        </div>
+        <a href="./neuroclip-showcase-en.mp4" download class="text-xs text-slate-300 hover:text-white underline font-mono">
+          Download MP4 (neuroclip-showcase-en.mp4)
+        </a>
+      </div>
+      <div class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video">
+        <video id="mux_video" controls preload="metadata" class="w-full h-full object-contain"></video>
+      </div>
+    </section>
+
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <div>
+          <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Showcase 02 - English Commercial Spot</span>
+          <h2 class="text-xl font-bold text-white mt-2">Commercial Product & Brand Spot (English)</h2>
+          <p class="text-slate-400 text-sm">High-contrast commercial lighting, controlled camera movement, and clean post-production finishing.</p>
+        </div>
+        <a href="./synndicate-en-showcase.mp4" download class="text-xs text-slate-300 hover:text-white underline font-mono">
+          Download MP4 (synndicate-en-showcase.mp4)
+        </a>
+      </div>
+      <div class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video">
+        <video controls preload="metadata" class="w-full h-full object-contain" src="./synndicate-en-showcase.mp4"></video>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function() {
+      const video = document.getElementById('mux_video');
+      const muxSrc = 'https://stream.mux.com/uCH1BPasMGwHgvFsXdL9008d6l6FU6mu57X1drSk02V2E.m3u8';
+      if (window.Hls && Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(muxSrc);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = muxSrc;
+      } else {
+        video.src = './neuroclip-showcase-en.mp4';
+      }
+    })();
+  </script>
+</body>
+</html>
