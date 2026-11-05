@@ -1,0 +1,5 @@
+# Upwork screening task: client materials and renders stay local (not for public repo)
+appliance-90-pipeline/HANDOFF.md
+appliance-90-pipeline/screening/*
+!appliance-90-pipeline/screening/assemble.sh
+__pycache__/
