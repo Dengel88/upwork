@@ -2,4 +2,5 @@
 appliance-90-pipeline/HANDOFF.md
 appliance-90-pipeline/screening/*
 !appliance-90-pipeline/screening/assemble.sh
+!appliance-90-pipeline/screening/retime.py
 __pycache__/
