@@ -94,6 +94,16 @@ for p in pos:
         img = nxt
     else:
         img = cv2.addWeighted(cur, 1 - fr, nxt, fr, 0)
+    # финальный дрейф камеры: END_DRIFT="1.6:0.03" — последние 1.6 с лёгкий наезд до +3% (без мёртвой паузы)
+    ed = os.environ.get("END_DRIFT")
+    if ed:
+        dur, amt = map(float, ed.split(":"))
+        t = k / OUT_FPS; t0 = T - dur
+        if t > t0:
+            u = min(1.0, (t - t0) / dur); u = u * u * (3 - 2 * u)
+            s = 1 + amt * u
+            M = cv2.getRotationMatrix2D((W / 2, H / 2), 0, s)
+            img = cv2.warpAffine(img, M, (W, H), flags=cv2.INTER_LANCZOS4)
     enc.stdin.write(img.tobytes()); k += 1
 enc.stdin.close(); enc.wait()
 print("written", k, "frames")
