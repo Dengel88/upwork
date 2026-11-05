@@ -83,6 +83,27 @@ def all_frames():
             if (f.shape[1], f.shape[0]) != (W, H):
                 f = cv2.resize(f, (W, H), interpolation=cv2.INTER_AREA)
             yield f
+_fcache = {}
+def flow_interp(a, b, fr, key):
+    """Промежуточный кадр по оптическому потоку (без двоения контуров, как при простом смешивании)."""
+    if key not in _fcache:
+        _fcache.clear()
+        sw = 960; sh = int(H * sw / W)
+        ga = cv2.cvtColor(cv2.resize(a, (sw, sh), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2GRAY)
+        gb = cv2.cvtColor(cv2.resize(b, (sw, sh), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2GRAY)
+        f_ab = cv2.calcOpticalFlowFarneback(ga, gb, None, 0.5, 4, 25, 4, 5, 1.2, 0)
+        f_ba = cv2.calcOpticalFlowFarneback(gb, ga, None, 0.5, 4, 25, 4, 5, 1.2, 0)
+        sc = W / sw
+        up = lambda f: cv2.resize(f, (W, H), interpolation=cv2.INTER_LINEAR) * sc
+        _fcache[key] = (up(f_ab), up(f_ba))
+    f_ab, f_ba = _fcache[key]
+    fr = np.float32(fr)
+    gx, gy = np.meshgrid(np.arange(W, dtype=np.float32), np.arange(H, dtype=np.float32))
+    # пиксель промежуточного кадра: из a назад на fr*поток(a->b), из b назад на (1-fr)*поток(b->a)
+    wa = cv2.remap(a, gx - fr * f_ab[..., 0], gy - fr * f_ab[..., 1], cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    wb = cv2.remap(b, gx - (1 - fr) * f_ba[..., 0], gy - (1 - fr) * f_ba[..., 1], cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    return cv2.addWeighted(wa, 1 - fr, wb, fr, 0)
+
 src = all_frames(); gi = 0; cur = next(src); nxt = next(src, None); k = 0
 for p in pos:
     i = int(np.floor(p)); fr = p - i
@@ -93,7 +114,7 @@ for p in pos:
     elif fr > 0.92:
         img = nxt
     else:
-        img = cv2.addWeighted(cur, 1 - fr, nxt, fr, 0)
+        img = flow_interp(cur, nxt, fr, gi)
     # финальный дрейф камеры: END_DRIFT="1.6:0.03" — последние 1.6 с лёгкий наезд до +3% (без мёртвой паузы)
     ed = os.environ.get("END_DRIFT")
     if ed:
