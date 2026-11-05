@@ -115,6 +115,16 @@ for p in pos:
         img = nxt
     else:
         img = flow_interp(cur, nxt, fr, gi)
+    # цифровой наезд на деталь по времени ИСХОДНИКА: DZOOM="8.0-14.0:0.10:0.40:0.35" — масштаб 1→1+amt→1 (синус), центр в долях кадра
+    dz = os.environ.get("DZOOM")
+    if dz:
+        rng, amt, cx, cy = dz.split(":"); a0, a1 = map(float, rng.split("-"))
+        ts = p / fps_s
+        if a0 < ts < a1:
+            u = (ts - a0) / (a1 - a0)
+            s = 1 + float(amt) * np.sin(np.pi * u) ** 2
+            M = cv2.getRotationMatrix2D((W * float(cx), H * float(cy)), 0, s)
+            img = cv2.warpAffine(img, M, (W, H), flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE)
     # финальный дрейф камеры: END_DRIFT="1.6:0.03" — последние 1.6 с лёгкий наезд до +3% (без мёртвой паузы)
     ed = os.environ.get("END_DRIFT")
     if ed:
