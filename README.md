@@ -13,3 +13,4 @@ Built by **Ayman K. | Synndicate AI (`Lead AI Systems Architect & Generative Med
 5. **[`./storytelling-ads-en-ar/`](https://dengel88.github.io/upwork/storytelling-ads-en-ar/)** — Cinematic AI Storytelling Studio (`EN + AR` Localization) & 15-Second Zero-Warp Personalised Print Compositing Pipeline
 6. **[`./igaming-cs-ai-pilot/`](https://dengel88.github.io/upwork/igaming-cs-ai-pilot/)** — iGaming Customer Service AI Triage, Multimodal Slip OCR & Read-Only PSP Bridge (`LiveChat.com` + `LINE` 5-Point Vendor Evaluation & Live Simulator)
 7. **[`./amara-quiet-luxury-studio/`](https://dengel88.github.io/upwork/amara-quiet-luxury-studio/)** — AMARA Quiet Luxury ComfyUI LoRA Character Lookbook, Kling/Wan 2.1 Reels & Weekly Google Drive QC Hub
+8. **[`./uk-care-veo-heygen-pipeline/`](https://dengel88.github.io/upwork/uk-care-veo-heygen-pipeline/)** — UK Vocational Training AI Video Factory (Google Veo + HeyGen 128 Videos/Month Pipeline & "Safeguarding Adults" Pilot)
