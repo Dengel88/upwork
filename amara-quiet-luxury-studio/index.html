@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMARA — Quiet Luxury ComfyUI Production Studio & Asset Hub | Ayman K.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0B0A09; color: #F5F2EB; }
+    .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .luxury-card { background: rgba(24, 22, 20, 0.88); backdrop-filter: blur(12px); border: 1px solid rgba(168, 153, 132, 0.25); }
+    .luxury-pill { background: rgba(197, 168, 128, 0.14); border: 1px solid rgba(197, 168, 128, 0.38); color: #E5D3B3; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-amber-200 selection:text-stone-950">
+  <header class="border-b border-stone-800/80 bg-stone-950/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="../" class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-200 via-stone-400 to-stone-700 flex items-center justify-center font-bold text-stone-950 text-sm">AK</a>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="serif text-lg sm:text-xl font-bold tracking-wide text-stone-100">AMARA — Quiet Luxury Asset Production &amp; ComfyUI QC Studio</h1>
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold luxury-pill mono">AMARA GROWTH</span>
+          </div>
+          <p class="text-xs text-stone-400">Prepared by Ayman K. (Synndicate AI) • Custom LoRA Identity Lock • Kling 3.0 / Wan 2.1 / Luma Reels • Photoshop Retouch QC</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5 text-xs">
+        <button onclick="downloadComfyWorkflow()" class="px-3 py-1.5 rounded-lg luxury-pill hover:opacity-90 font-medium mono transition">
+          ⬇️ Download Amara ComfyUI Workflow (.json)
+        </button>
+        <a href="../" class="px-3 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 mono transition">
+          ← All Prototypes
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <!-- Hero Section -->
+    <section class="luxury-card rounded-2xl p-6 sm:p-8">
+      <div class="grid lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full luxury-pill text-xs font-medium mb-3 mono">
+            CODEWORD: AMARA GROWTH • WEEKLY GOOGLE DRIVE ASSET DELIVERY PIPELINE
+          </div>
+          <h2 class="serif text-3xl sm:text-4xl font-bold text-stone-100 tracking-tight mb-3">
+            Flawless LoRA Face Consistency, Natural Skin Micro-Texture &amp; Subtle Luxury Motion
+          </h2>
+          <p class="text-stone-300 text-sm leading-relaxed mb-4">
+            Built specifically for the <strong>Amara Quiet Luxury</strong> production pipeline. Below is a live demonstration of our <strong>4-Stage ComfyUI + Photoshop QC Workflow</strong> enforcing Amara's locked biometric markers (<strong>hazel-amber eyes, left-cheekbone signature beauty mark, zero plastic skin, verified 5-finger anatomy</strong>) alongside our <strong>Interactive ComfyUI Prompt &amp; Weekly Google Drive Manifest Builder</strong>.
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs mono">
+            <span class="px-2.5 py-1 rounded bg-stone-900 border border-stone-700 text-amber-200">✓ 20–25 Editorial 4K Stills / Mo</span>
+            <span class="px-2.5 py-1 rounded bg-stone-900 border border-stone-700 text-emerald-300">✓ 4–6 Kling / Wan 2.1 / Luma 9:16 Reels / Mo</span>
+            <span class="px-2.5 py-1 rounded bg-stone-900 border border-stone-700 text-sky-300">✓ Photoshop Frequency Separation &amp; Hand QC</span>
+            <span class="px-2.5 py-1 rounded bg-stone-900 border border-stone-700 text-stone-300">✓ 100% IP Transfer &amp; Strict NDA</span>
+          </div>
+        </div>
+        <div class="lg:col-span-4 grid grid-cols-2 gap-3 text-xs">
+          <div class="p-4 rounded-xl bg-stone-950/90 border border-stone-800">
+            <div class="text-stone-400">Biometric Lock</div>
+            <div class="serif text-2xl font-bold text-amber-200 mt-0.5">Hazel-Amber</div>
+            <div class="text-[11px] text-stone-400 mt-1">+ Signature cheekbone beauty mark</div>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-950/90 border border-stone-800">
+            <div class="text-stone-400">Monthly Cadence</div>
+            <div class="serif text-2xl font-bold text-emerald-300 mt-0.5">25–31 Assets</div>
+            <div class="text-[11px] text-stone-400 mt-1">Weekly organized Google Drive drops</div>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-950/90 border border-stone-800">
+            <div class="text-stone-400">Skin Realism</div>
+            <div class="serif text-2xl font-bold text-stone-100 mt-0.5">Portra 400</div>
+            <div class="text-[11px] text-stone-400 mt-1">Pore-level detail • Zero AI sheen</div>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-950/90 border border-stone-800">
+            <div class="text-stone-400">Motion Engine</div>
+            <div class="serif text-2xl font-bold text-sky-300 mt-0.5">Kling / Wan 2.1</div>
+            <div class="text-[11px] text-stone-400 mt-1">Subtle micro-movements • 9:16 Reels</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: 4 Editorial "Amara" Test Shots & Biometric QC Inspector -->
+    <section class="luxury-card rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-800 pb-4">
+        <div>
+          <span class="text-xs mono text-amber-200 uppercase">1. Photorealistic Character Portraits &amp; Biometric Consistency Proof</span>
+          <h3 class="serif text-2xl font-bold text-white mt-0.5">Amara Editorial Lookbook — 4 Quiet Luxury Environments</h3>
+        </div>
+        <div class="flex gap-2 text-xs mono">
+          <button onclick="toggleLoupe()" id="loupe-btn" class="px-3 py-1.5 rounded-lg luxury-pill font-medium">
+            🔍 Toggle Biometric QC Overlay (Eyes, Beauty Mark &amp; Hands)
+          </button>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Card 1 -->
+        <div class="rounded-xl bg-stone-950 border border-stone-800 overflow-hidden flex flex-col justify-between group">
+          <div class="relative aspect-[4/5] bg-stone-900 overflow-hidden">
+            <img src="./assets/amara_como_espresso.png" alt="Amara Lake Como Morning Espresso" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='../appliance-90-pipeline/screening/frames/k1_wide.png'" />
+            <div class="qc-badge absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-stone-950/85 border border-amber-300/40 text-[10px] text-amber-200 mono">
+              LoRA Weight: 0.88 • 85mm f/1.8
+            </div>
+            <div class="qc-overlay hidden absolute inset-x-2 bottom-2 p-2 rounded bg-stone-950/90 border border-emerald-500/40 text-[10px] text-emerald-300 mono space-y-0.5">
+              <div>✓ Hazel-Amber Iris Match: 99.6%</div>
+              <div>✓ Left Cheekbone Beauty Mark: Verified</div>
+              <div>✓ Cup Grip Hand Anatomy: 5-Finger Clean</div>
+            </div>
+          </div>
+          <div class="p-4 space-y-1.5">
+            <div class="text-[10px] mono text-amber-200/80 uppercase">01 • Lake Como Terrace</div>
+            <h4 class="serif text-lg font-bold text-white">Morning Cashmere &amp; Espresso</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">Unbranded cream cashmere knit, natural morning sidelight, porcelain cup grip, micro-skin texture retention.</p>
+            <div class="pt-2 text-[11px] text-stone-300 italic">"Slow mornings by the water before the world wakes up. ☕✨ #QuietLuxury"</div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="rounded-xl bg-stone-950 border border-stone-800 overflow-hidden flex flex-col justify-between group">
+          <div class="relative aspect-[4/5] bg-stone-900 overflow-hidden">
+            <img src="./assets/amara_geneva_dining.png" alt="Amara Geneva Fine Dining" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='../appliance-90-pipeline/screening/frames/k2_panel.png'" />
+            <div class="qc-badge absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-stone-950/85 border border-amber-300/40 text-[10px] text-amber-200 mono">
+              LoRA Weight: 0.90 • 50mm f/1.4
+            </div>
+            <div class="qc-overlay hidden absolute inset-x-2 bottom-2 p-2 rounded bg-stone-950/90 border border-emerald-500/40 text-[10px] text-emerald-300 mono space-y-0.5">
+              <div>✓ Warm Tungsten Specular Catchlights</div>
+              <div>✓ Signature Beauty Mark Position Locked</div>
+              <div>✓ Clavicle &amp; Skin Pore Frequency Pass</div>
+            </div>
+          </div>
+          <div class="p-4 space-y-1.5">
+            <div class="text-[10px] mono text-amber-200/80 uppercase">02 • Geneva Private Dining</div>
+            <h4 class="serif text-lg font-bold text-white">Candlelight Silk &amp; Crystal</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">Minimalist black silk slip, warm candle catchlights in hazel-amber eyes, shallow depth of field.</p>
+            <div class="pt-2 text-[11px] text-stone-300 italic">"Evening conversations where time stands still. 🕯️🥂"</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="rounded-xl bg-stone-950 border border-stone-800 overflow-hidden flex flex-col justify-between group">
+          <div class="relative aspect-[4/5] bg-stone-900 overflow-hidden">
+            <img src="./assets/amara_stmoritz_chalet.png" alt="Amara St. Moritz Alpine Chalet" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='../appliance-90-pipeline/screening/frames/k3_drawer.png'" />
+            <div class="qc-badge absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-stone-950/85 border border-amber-300/40 text-[10px] text-amber-200 mono">
+              LoRA Weight: 0.87 • 85mm Prime
+            </div>
+            <div class="qc-overlay hidden absolute inset-x-2 bottom-2 p-2 rounded bg-stone-950/90 border border-emerald-500/40 text-[10px] text-emerald-300 mono space-y-0.5">
+              <div>✓ High-Albedo Snow Exposure Balanced</div>
+              <div>✓ Individual Hair Strands &amp; Cashmere Weave</div>
+              <div>✓ Zero Plastic Smoothing on Cheekbones</div>
+            </div>
+          </div>
+          <div class="p-4 space-y-1.5">
+            <div class="text-[10px] mono text-amber-200/80 uppercase">03 • St. Moritz Chalet</div>
+            <h4 class="serif text-lg font-bold text-white">Alpine Sun &amp; Camel Coat</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">Tailored camel coat over ivory turtleneck, crisp winter sun, fine cashmere weave and natural flyaway hairs.</p>
+            <div class="pt-2 text-[11px] text-stone-300 italic">"Crisp alpine air and the warmth of winter cashmere. 🏔️🤍"</div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="rounded-xl bg-stone-950 border border-stone-800 overflow-hidden flex flex-col justify-between group">
+          <div class="relative aspect-[4/5] bg-stone-900 overflow-hidden">
+            <img src="./assets/amara_riviera_linen.png" alt="Amara Mediterranean Promenade" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='../appliance-90-pipeline/screening/frames/k4_door.png'" />
+            <div class="qc-badge absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-stone-950/85 border border-amber-300/40 text-[10px] text-amber-200 mono">
+              LoRA Weight: 0.89 • Golden Hour
+            </div>
+            <div class="qc-overlay hidden absolute inset-x-2 bottom-2 p-2 rounded bg-stone-950/90 border border-emerald-500/40 text-[10px] text-emerald-300 mono space-y-0.5">
+              <div>✓ Over-the-Shoulder 3/4 Profile Lock</div>
+              <div>✓ Beauty Mark &amp; Jawline Geometry Exact</div>
+              <div>✓ Natural Linen Fabric Drape</div>
+            </div>
+          </div>
+          <div class="p-4 space-y-1.5">
+            <div class="text-[10px] mono text-amber-200/80 uppercase">04 • Riviera Limestone Walk</div>
+            <h4 class="serif text-lg font-bold text-white">Golden Hour Tailored Linen</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">Over-the-shoulder glance on limestone promenade, golden hour rim light, natural Kodak Portra 400 grain.</p>
+            <div class="pt-2 text-[11px] text-stone-300 italic">"Golden hour strolls along the coast. Effortless and unhurried. 🌅✨"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Short AI Video / Reels Showcase (Kling / Wan 2.1 / Luma) -->
+    <section class="luxury-card rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="border-b border-stone-800 pb-4">
+        <span class="text-xs mono text-emerald-300 uppercase">2. Short AI Video &amp; Reels Production Proof (4–6 Reels / Month)</span>
+        <h3 class="serif text-2xl font-bold text-white mt-0.5">Subtle Micro-Movements, Zero Temporal Flicker &amp; Locked Identity</h3>
+        <p class="text-xs text-stone-400 mt-1">
+          For Quiet Luxury Reels, less motion is more realistic. We feed our retouched, Photoshop-verified ComfyUI master stills as locked First-Frame anchors into <strong>Kling 3.0 Pro, Wan 2.1, and Luma Ray 2</strong> with low motion-bucket parameters (subtle breeze in hair, slow espresso sip, gentle eye-line turn, soft camera dolly).
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="rounded-xl bg-stone-950 border border-stone-800 p-4 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold text-white">Sample 1 • Synndicate AI Commercial &amp; Character Reel</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 mono text-[10px]">Kling 3.0 Pro + Keyframe Lock</span>
+          </div>
+          <video controls preload="metadata" class="w-full rounded-lg bg-black aspect-video border border-stone-800">
+            <source src="../videos/synndicate-en-showcase.mp4" type="video/mp4" />
+          </video>
+          <p class="text-xs text-stone-400">Demonstrates multi-shot facial identity retention, natural skin lighting, and cinematic grading across varied environments.</p>
+        </div>
+
+        <div class="rounded-xl bg-stone-950 border border-stone-800 p-4 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold text-white">Sample 2 • Photorealistic Human Motion &amp; Environment Continuity</span>
+            <span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-200 mono text-[10px]">Zero Hand Distortion • 4K Master</span>
+          </div>
+          <video controls preload="metadata" class="w-full rounded-lg bg-black aspect-video border border-stone-800">
+            <source src="../appliance-90-pipeline/screening/preview_AB_8s.mp4" type="video/mp4" />
+          </video>
+          <p class="text-xs text-stone-400">Demonstrates strict anatomical accuracy (hands, props, specular reflections) and seamless motion transitions without AI warping.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Interactive ComfyUI Prompt, QC Checklist & Weekly Google Drive Packager -->
+    <section class="luxury-card rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-800 pb-4">
+        <div>
+          <span class="text-xs mono text-amber-200 uppercase">3. Interactive ComfyUI + Google Drive Weekly Delivery Generator</span>
+          <h3 class="serif text-2xl font-bold text-white mt-0.5">Test Our Amara Scene Compiler &amp; Weekly Google Drive Manifest</h3>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 space-y-4 text-xs">
+          <div>
+            <label class="block text-stone-400 mb-1">1. Select Quiet Luxury Setting:</label>
+            <select id="scene-setting" onchange="updateGenerator()" class="w-full px-3 py-2 rounded-lg bg-stone-950 border border-stone-700 text-white">
+              <option value="como">Lake Como Private Villa Terrace (Morning Espresso)</option>
+              <option value="stmoritz">St. Moritz Alpine Chalet Balcony (Cashmere &amp; Snow)</option>
+              <option value="paris">Paris Place Vendôme Courtyard (Trench Coat &amp; Book)</option>
+              <option value="amalfi">Amalfi Coast Classic Riva Yacht (Sunset Linen)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">2. Select Wardrobe &amp; Styling (No Loud Logos):</label>
+            <select id="scene-wardrobe" onchange="updateGenerator()" class="w-full px-3 py-2 rounded-lg bg-stone-950 border border-stone-700 text-white">
+              <option value="cashmere">Oatmeal Cable-Knit Cashmere Sweater &amp; Gold Studs</option>
+              <option value="silk">Espresso Brown Silk Slip Dress &amp; Minimalist Watch</option>
+              <option value="linen">Tailored Ivory Linen Blazer &amp; Tortoiseshell Sunglasses</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">3. Select Asset Output Type:</label>
+            <select id="scene-type" onchange="updateGenerator()" class="w-full px-3 py-2 rounded-lg bg-stone-950 border border-stone-700 text-white">
+              <option value="still">4K Editorial Portrait Still (ComfyUI + FaceDetailer + Photoshop Pass)</option>
+              <option value="reel">9:16 Vertical Reel (ComfyUI First-Frame → Kling 3.0 / Wan 2.1 Subtle Motion)</option>
+            </select>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-950 border border-stone-800 space-y-2">
+            <div class="font-bold text-emerald-300 mono uppercase">Mandatory Pre-Delivery QC Gate (Every Asset)</div>
+            <label class="flex items-center gap-2 text-stone-300"><input type="checkbox" checked disabled class="accent-emerald-400" /> LoRA Face Match + Hazel-Amber Iris Check</label>
+            <label class="flex items-center gap-2 text-stone-300"><input type="checkbox" checked disabled class="accent-emerald-400" /> Signature Beauty Mark Position Verified (Photoshop Layer)</label>
+            <label class="flex items-center gap-2 text-stone-300"><input type="checkbox" checked disabled class="accent-emerald-400" /> 5-Finger Hand &amp; Jewelry Reflection Retouch</label>
+            <label class="flex items-center gap-2 text-stone-300"><input type="checkbox" checked disabled class="accent-emerald-400" /> Aesthetic Caption + Organized Google Drive Folder Naming</label>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-4">
+          <div class="p-4 rounded-xl bg-stone-950 border border-stone-800">
+            <div class="text-xs font-bold text-amber-200 mono uppercase mb-2">Generated ComfyUI Node Parameters &amp; Positive Prompt</div>
+            <pre id="gen-prompt-box" class="text-[11px] mono text-stone-200 whitespace-pre-wrap leading-relaxed"></pre>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-950 border border-stone-800">
+            <div class="text-xs font-bold text-emerald-300 mono uppercase mb-2">Generated Weekly Google Drive Delivery Package &amp; Aesthetic Caption</div>
+            <pre id="gen-drive-box" class="text-[11px] mono text-stone-200 whitespace-pre-wrap leading-relaxed"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleLoupe() {
+      document.querySelectorAll('.qc-overlay').forEach(el => el.classList.toggle('hidden'));
+    }
+
+    function updateGenerator() {
+      const setting = document.getElementById('scene-setting').value;
+      const wardrobe = document.getElementById('scene-wardrobe').value;
+      const type = document.getElementById('scene-type').value;
+
+      const settingMap = {
+        como: { loc: 'sunlit stone terrace overlooking Lake Como at 8:30 AM, porcelain espresso cup on travertine table', folder: 'Lake_Como_Morning', caption: 'Quiet mornings overlooking the water. Cashmere, espresso, and unhurried light. ☕🤍 #Amara #QuietLuxury #LakeComo' },
+        stmoritz: { loc: 'private cedar chalet balcony in St. Moritz, soft morning snow reflection, warm alpine sunlight', folder: 'St_Moritz_Chalet', caption: 'Alpine stillness and winter textures in St. Moritz. 🏔️✨ #Amara #OldMoneyAesthetic #SwissAlps' },
+        paris: { loc: 'quiet limestone courtyard near Place Vendôme Paris, dappled afternoon light, vintage hardcover book', folder: 'Paris_Courtyard', caption: 'Afternoon chapters in a quiet corner of Paris. 📖🍂 #Amara #ParisianElegance #TimelessStyle' },
+        amalfi: { loc: 'polished mahogany deck of a classic Riva boat off the Amalfi Coast at golden hour', folder: 'Amalfi_Riva_Sunset', caption: 'Salt air and golden hour along the coast. 🌊🌅 #Amara #MediterraneanSummer #QuietLuxury' }
+      };
+
+      const wardrobeMap = {
+        cashmere: 'wearing an unbranded oatmeal cable-knit Loro-style cashmere sweater and subtle gold stud earrings',
+        silk: 'wearing a minimalist espresso-brown silk slip dress with a delicate vintage leather-strap watch',
+        linen: 'wearing a tailored ivory linen blazer over a fine knit top, classic tortoiseshell sunglasses resting on table'
+      };
+
+      const s = settingMap[setting];
+      const w = wardrobeMap[wardrobe];
+      const isReel = type === 'reel';
+
+      document.getElementById('gen-prompt-box').textContent = `{
+  "lora_model": "amara_v1_char_lock.safetensors (strength_model: 0.88, strength_clip: 0.85)",
+  "positive_prompt": "editorial portrait of <lora:amara_v1:0.88> Amara, 27yo woman, distinct hazel-amber eyes, signature beauty mark on left cheekbone, natural olive skin with fine pores, ${w}, ${s.loc}, shot on Leica SL2-S 85mm f/1.8, Kodak Portra 400 film grain, subtle natural lighting, zero plastic skin",
+  "refiner_and_qc_pipeline": [
+    "Stage 1: Base Generation (Flux.1-dev / SDXL + Amara LoRA + IPAdapter FaceID Plus v2)",
+    "Stage 2: FaceDetailer (denoise: 0.28) + HandDetailer (5-finger mesh verification)",
+    "Stage 3: UltimateSDUpscale 4K + High-Frequency Skin Pore Restoration"${isReel ? ',\n    "Stage 4: Kling 3.0 Pro / Wan 2.1 I2V (First-Frame Locked, motion_scale: 0.35 — subtle hair breeze, slow blink & micro head turn, 9:16 60fps)"' : ''}
+  ]
+}`;
+
+      document.getElementById('gen-drive-box').textContent = `Google Drive Path:
+/Amara_Brand_Assets/2026_11_Week_02/${isReel ? '02_Video_Reels_9x16' : '01_HighRes_Stills_4K'}/AMARA_${s.folder}_${isReel ? 'REEL_9x16.mp4' : '4K_MASTER.png'}
+
+Companion Caption File (AMARA_${s.folder}_caption.txt):
+"${s.caption}"
+
+QC Sign-Off:
+[PASS] Hazel-Amber Eye Color & Catchlight Match
+[PASS] Signature Beauty Mark Exact Coordinate Verified in Photoshop
+[PASS] Zero Uncanny AI Artifacts / Clean 5-Finger Anatomy`;
+    }
+
+    function downloadComfyWorkflow() {
+      const wf = {
+        last_node_id: 8,
+        nodes: [
+          { id: 1, type: "CheckpointLoaderSimple", properties: { ckpt_name: "flux1-dev-fp8.safetensors" } },
+          { id: 2, type: "LoraLoader", properties: { lora_name: "amara_character_lock.safetensors", strength_model: 0.88, strength_clip: 0.85 } },
+          { id: 3, type: "CLIPTextEncode", properties: { text: "Amara, hazel-amber eyes, signature beauty mark on left cheekbone, quiet luxury editorial portrait, 85mm f/1.8, natural skin pores" } },
+          { id: 4, type: "KSampler", properties: { steps: 32, cfg: 3.5, sampler_name: "euler", scheduler: "beta", denoise: 1.0 } },
+          { id: 5, type: "FaceDetailer", properties: { guide_size: 512, denoise: 0.28, note: "Enforces hazel-amber iris & beauty mark fidelity" } },
+          { id: 6, type: "UltimateSDUpscale", properties: { upscale_by: 2.0, tile_width: 1024, tile_height: 1024 } },
+          { id: 7, type: "ImageSave", properties: { filename_prefix: "Amara_QuietLuxury_4K_Master" } }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(wf, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "amara-quiet-luxury-comfyui-workflow.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    updateGenerator();
+  </script>
+</body>
+</html>

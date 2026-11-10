@@ -12,3 +12,4 @@ Built by **Ayman K. | Synndicate AI (`Lead AI Systems Architect & Generative Med
 4. **[`./ecom-warrior-ai-os/`](https://dengel88.github.io/upwork/ecom-warrior-ai-os/)** — Ecom Warrior Academy ($10M+ AUD) AI Operating System, Sales Call Intelligence & First 30-Day ROI Command Center
 5. **[`./storytelling-ads-en-ar/`](https://dengel88.github.io/upwork/storytelling-ads-en-ar/)** — Cinematic AI Storytelling Studio (`EN + AR` Localization) & 15-Second Zero-Warp Personalised Print Compositing Pipeline
 6. **[`./igaming-cs-ai-pilot/`](https://dengel88.github.io/upwork/igaming-cs-ai-pilot/)** — iGaming Customer Service AI Triage, Multimodal Slip OCR & Read-Only PSP Bridge (`LiveChat.com` + `LINE` 5-Point Vendor Evaluation & Live Simulator)
+7. **[`./amara-quiet-luxury-studio/`](https://dengel88.github.io/upwork/amara-quiet-luxury-studio/)** — AMARA Quiet Luxury ComfyUI LoRA Character Lookbook, Kling/Wan 2.1 Reels & Weekly Google Drive QC Hub
