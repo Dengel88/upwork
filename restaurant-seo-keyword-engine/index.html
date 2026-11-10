@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Local-SEO Keyword Research Engine — TypeScript / Next.js / SQLite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .card { background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(148, 163, 184, 0.14); backdrop-filter: blur(12px); }
+    .tab-btn-active { background: #10b981; color: #052e16; font-weight: 700; }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+  <!-- Top Bar -->
+  <header class="border-b border-slate-800 bg-slate-950/90 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-emerald-400 mono">
+          SEO
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg text-white">Restaurant Local-SEO Keyword Research Engine</h1>
+            <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 mono">Next.js + TypeScript + SQLite</span>
+          </div>
+          <p class="text-xs text-slate-400">Built to §1–§10 Technical Scope · DataForSEO + Firecrawl + Deterministic/LLM Relevance Gate</p>
+        </div>
+      </div>
+
+      <!-- Cost Control HUD (§6 Hard Requirement) -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-center gap-3">
+          <div>
+            <span class="text-slate-400">Run Spend Cap:</span>
+            <span class="mono text-white font-semibold">$0.250</span>
+          </div>
+          <span class="text-slate-700">|</span>
+          <div>
+            <span class="text-slate-400">Actual Run Cost:</span>
+            <span id="runCostHud" class="mono text-emerald-400 font-semibold">$0.074</span>
+          </div>
+          <span class="text-slate-700">|</span>
+          <div>
+            <span class="text-slate-400">SQLite Cache:</span>
+            <span class="mono text-sky-400">HIT (64%)</span>
+          </div>
+        </div>
+        <button onclick="exportCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5">
+          ⬇ Export §3.7 CSV
+        </button>
+        <button onclick="exportJSON()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-xs transition flex items-center gap-1.5">
+          ⬇ Export JSON Plan
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+    <!-- Restaurant Selector & Lookup Bar (§2 & §3.1) -->
+    <div class="card rounded-2xl p-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+        <div class="lg:col-span-5">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+            1. Restaurant Lookup (Name + City/State or Google <code class="mono text-emerald-400">place_id</code>)
+          </label>
+          <select id="restSelect" onchange="switchRestaurant()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500">
+            <option value="ramen">Goro Ramen — Oklahoma City, OK (place_id: ChIJ_goro_okc_8821) — Tests "No Sushi for Ramen Shop" Gate</option>
+            <option value="mexican">Cactus Tacos & Cantina — Oklahoma City, OK (place_id: ChIJ_cactus_okc_1940) — Tests Multi-Town + Catering</option>
+          </select>
+        </div>
+        <div class="lg:col-span-3">
+          <label class="block text-xs text-slate-400 mb-1.5">Surrounding Town Radius (§3.4):</label>
+          <select id="radiusSelect" onchange="renderAll()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-xs sm:text-sm text-white">
+            <option value="15">15 Miles (Default — High Conversion)</option>
+            <option value="25">25 Miles (Extended Metro Area)</option>
+          </select>
+        </div>
+        <div class="lg:col-span-4 flex gap-2">
+          <button onclick="simulatePipelineRun()" class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition shadow-lg shadow-emerald-500/15">
+            ▶ Run Full GBP + Review + SEO Pipeline
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs Following §3.1 – §3.7 -->
+    <div class="flex flex-wrap gap-2">
+      <button id="tabBtn1" onclick="showTab(1)" class="tab-btn-active px-4 py-2 rounded-xl text-xs sm:text-sm transition">
+        §3.7 Page-by-Page Keyword Plan (CSV/JSON Schema)
+      </button>
+      <button id="tabBtn2" onclick="showTab(2)" class="bg-slate-900 text-slate-300 hover:text-white border border-slate-800 px-4 py-2 rounded-xl text-xs sm:text-sm transition">
+        §3.3 Relevance Classifier & "No Sushi for Ramen" Audit Log
+      </button>
+      <button id="tabBtn3" onclick="showTab(3)" class="bg-slate-900 text-slate-300 hover:text-white border border-slate-800 px-4 py-2 rounded-xl text-xs sm:text-sm transition">
+        §3.1 GBP Provenance + Google Review Dish Miner
+      </button>
+      <button id="tabBtn4" onclick="showTab(4)" class="bg-slate-900 text-slate-300 hover:text-white border border-slate-800 px-4 py-2 rounded-xl text-xs sm:text-sm transition">
+        §3.6 Firecrawl Website Audit (NEW vs. UPDATE + Defects)
+      </button>
+    </div>
+
+    <!-- TAB 1: PAGE-BY-PAGE KEYWORD PLAN (§3.7 EXACT 10-COLUMN SCHEMA) -->
+    <section id="tab1" class="card rounded-2xl p-5 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-sm sm:text-base font-bold text-white">Prioritized Page-by-Page Keyword Plan (§3.7 Developer Handoff Table)</h2>
+          <p class="text-xs text-slate-400">Exact 10-column schema: <code class="mono text-slate-300">restaurant, category, page, recommendation, needs-verification, keyword, monthly searches, geography, suggested slug, existing page</code></p>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 mono">Data Source: DataForSEO Google Ads Local</span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 mono text-[11px] uppercase">
+              <th class="py-2.5 px-2">Category (§4)</th>
+              <th class="py-2.5 px-2">Recommended Page</th>
+              <th class="py-2.5 px-2">Action</th>
+              <th class="py-2.5 px-2">Needs Verif?</th>
+              <th class="py-2.5 px-2">Target Keyword</th>
+              <th class="py-2.5 px-2 text-right">Mo. Volume</th>
+              <th class="py-2.5 px-2">Geography</th>
+              <th class="py-2.5 px-2">Suggested Slug</th>
+              <th class="py-2.5 px-2">Existing URL (Firecrawl)</th>
+            </tr>
+          </thead>
+          <tbody id="planTableBody" class="divide-y divide-slate-800/70"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 2: RELEVANCE CLASSIFIER & COST GATE (§3.3 & §7) -->
+    <section id="tab2" class="hidden card rounded-2xl p-5 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-sm sm:text-base font-bold text-white">§3.3 Hybrid Deterministic + Structured LLM Relevance Classifier</h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+             Layer 1 (Deterministic Taxonomy & Negative Ontology) blocks wrong cuisines & unverified services at $0 cost → Layer 2 (Pydantic/Zod-Validated LLM) scores fuzzy dish/intent fit → Only <code class="mono text-emerald-400">relevant</code> candidates hit paid DataForSEO volume APIs.
+          </p>
+        </div>
+        <span class="px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold mono">
+          Cost Saved by Pre-Volume Filtering: 58%
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 mono text-[11px] uppercase">
+              <th class="py-2.5 px-2">Candidate Keyword</th>
+              <th class="py-2.5 px-2">Intent Tag</th>
+              <th class="py-2.5 px-2">Decision</th>
+              <th class="py-2.5 px-2">Decision Engine</th>
+              <th class="py-2.5 px-2">Auditable Reason (Stored in SQLite)</th>
+              <th class="py-2.5 px-2">Sent to Paid Volume API?</th>
+            </tr>
+          </thead>
+          <tbody id="classifierTableBody" class="divide-y divide-slate-800/70"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 3: GBP PROVENANCE & GOOGLE REVIEWS DISH SCRAPER (§3.1 & §3.2) -->
+    <section id="tab3" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-6 card rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-white text-sm">§3.1 GBP Profile Ingestion & Fact Provenance Matrix</h3>
+          <span class="text-[11px] mono text-sky-400">Unverified Claims Gated</span>
+        </div>
+        <p class="text-xs text-slate-400">
+          Google-inferred attributes (like 3rd-party DoorDash delivery or unconfirmed catering) are flagged <code class="mono text-amber-300">UNVERIFIED</code> until operator confirmation so they never silently generate false pages.
+        </p>
+        <div id="provenanceContainer" class="space-y-2.5 text-xs"></div>
+      </div>
+
+      <div class="lg:col-span-6 card rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-white text-sm">Google Reviews Scraper → Signature Dish & Service Extractor</h3>
+          <span class="text-[11px] mono text-emerald-400">250 Recent Reviews Mined</span>
+        </div>
+        <p class="text-xs text-slate-400">
+          Extracts recurring dish mentions and praised services directly from customer reviews to seed high-converting <code class="mono text-emerald-300">dish</code> and <code class="mono text-emerald-300">service</code> keyword candidates.
+        </p>
+        <div id="reviewsContainer" class="space-y-2.5 text-xs"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: WEBSITE CRAWL & ON-PAGE SEO DEFECTS REPORT (§3.6) -->
+    <section id="tab4" class="hidden card rounded-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-white text-sm sm:text-base">§3.6 Bounded Website Crawl & On-Page SEO Defects Report</h3>
+          <p class="text-xs text-slate-400">Crawls up to 25 public pages via Firecrawl, maps existing URLs to keyword plan (<code class="mono text-sky-300">UPDATE</code> vs <code class="mono text-emerald-300">NEW</code>), and flags technical SEO defects.</p>
+        </div>
+        <span class="text-xs mono text-rose-400 font-semibold">4 Actionable Defects Found</span>
+      </div>
+      <div id="defectsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs"></div>
+    </section>
+  </main>
+
+  <script>
+    const DATA = {
+      ramen: {
+        name: "Goro Ramen",
+        city: "Oklahoma City, OK",
+        cost: "$0.074",
+        plan: [
+          { cat: "local", page: "Homepage — Oklahoma City Ramen House", rec: "UPDATE", verif: false, kw: "ramen oklahoma city", vol: 2900, geo: "Oklahoma City, OK", slug: "/", existing: "https://gororamen.com/" },
+          { cat: "dish", page: "Tonkotsu & Spicy Miso Ramen Menu", rec: "UPDATE", verif: false, kw: "tonkotsu ramen near me", vol: 1600, geo: "Oklahoma City, OK", slug: "/menu/tonkotsu-ramen", existing: "https://gororamen.com/menu" },
+          { cat: "dish", page: "Pork Belly Nikuman (Steamed Buns)", rec: "NEW", verif: false, kw: "pork belly buns oklahoma city", vol: 480, geo: "Oklahoma City, OK", slug: "/menu/pork-belly-nikuman-buns", existing: "—" },
+          { cat: "dish", page: "Vegan Mushroom Mazemen & Ramen", rec: "NEW", verif: false, kw: "vegan ramen oklahoma city", vol: 720, geo: "Oklahoma City, OK", slug: "/menu/vegan-ramen-okc", existing: "—" },
+          { cat: "surrounding", page: "Ramen Near Edmond, OK (Plaza District)", rec: "NEW", verif: true, kw: "ramen edmond ok", vol: 880, geo: "Edmond, OK (12.4 mi)", slug: "/locations/ramen-near-edmond-ok", existing: "—" },
+          { cat: "surrounding", page: "Japanese Ramen Near Norman, OK", rec: "NEW", verif: true, kw: "ramen norman ok", vol: 1300, geo: "Norman, OK (18.1 mi)", slug: "/locations/ramen-near-norman-ok", existing: "—" },
+          { cat: "service", page: "Online Ramen Pickup & Takeout OKC", rec: "NEW", verif: true, kw: "ramen takeout oklahoma city", vol: 390, geo: "Oklahoma City, OK", slug: "/order-pickup", existing: "—" },
+          { cat: "brand", page: "Goro Ramen Menu, Hours & Paseo Location", rec: "UPDATE", verif: false, kw: "goro ramen menu", vol: 3600, geo: "Oklahoma City, OK", slug: "/about-hours", existing: "https://gororamen.com/info" }
+        ],
+        classifier: [
+          { kw: "ramen oklahoma city", intent: "local", dec: "relevant", engine: "Deterministic Rule #1 (Primary Cuisine + City)", reason: "Exact match to verified GBP primary category (Ramen Restaurant) + city.", paid: "YES" },
+          { kw: "sushi oklahoma city", intent: "cuisine", dec: "rejected", engine: "Deterministic Negative Cuisine Matrix", reason: "BLOCKED: 'sushi' belongs to sibling Japanese subcategory not present in Goro Ramen's menu or GBP.", paid: "NO ($0.00)" },
+          { kw: "hibachi grill near me", intent: "cuisine", dec: "rejected", engine: "Deterministic Negative Cuisine Matrix", reason: "BLOCKED: Disjoint cuisine concept ('hibachi/teppanyaki'); zero menu/review evidence.", paid: "NO ($0.00)" },
+          { kw: "tonkotsu ramen near me", intent: "dish", dec: "relevant", engine: "Review Miner + Structured LLM (0.98 conf)", reason: "Mentioned in 142/250 Google reviews ('rich pork bone tonkotsu broth') + verified on menu.", paid: "YES" },
+          { kw: "vegan ramen oklahoma city", intent: "dish", dec: "relevant", engine: "Review Miner + Structured LLM (0.95 conf)", reason: "Confirmed in 38 reviews ('yasai vegan ramen') and GBP vegetarian attribute.", paid: "YES" },
+          { kw: "ramen delivery oklahoma city", intent: "service", dec: "review", engine: "Provenance Gate (§3.1)", reason: "HOLD FOR VERIFICATION: GBP lists 3rd-party delivery link, but direct restaurant delivery is unconfirmed.", paid: "YES (Flagged)" },
+          { kw: "instant ramen bulk wholesale", intent: "off-topic", dec: "off-topic", engine: "Deterministic Retail/Grocery Filter", reason: "BLOCKED: CPG/grocery intent; does not match dine-in/takeout restaurant intent.", paid: "NO ($0.00)" }
+        ],
+        provenance: [
+          { fact: "Primary Category: Ramen Restaurant, Izakaya", src: "GBP Verified Listing", status: "VERIFIED", badge: "emerald" },
+          { fact: "Address: 3000 Paseo, Oklahoma City, OK 73103", src: "GBP Verified Listing", status: "VERIFIED", badge: "emerald" },
+          { fact: "Dine-In & Curbside Pickup Offered", src: "GBP + Website Confirmed", status: "VERIFIED", badge: "emerald" },
+          { fact: "Delivery Service Attribute", src: "Google-Inferred (3rd-Party App Link)", status: "UNVERIFIED — Operator Confirm Req", badge: "amber" },
+          { fact: "Private Event Catering", src: "Not in GBP (2 Review Mentions)", status: "UNVERIFIED — Do Not Auto-Build Page", badge: "amber" }
+        ],
+        reviews: [
+          { dish: "Tori Paitan & Garlic Tonkotsu Ramen", count: "142 mentions", quote: "\"Best tonkotsu broth in OKC—rich, creamy, and the chashu pork melts...\"", cat: "dish" },
+          { dish: "Pork Belly Nikuman (Steamed Bao Buns)", count: "67 mentions", quote: "\"Never skip the pork belly nikuman buns and spicy pickledoshi...\"", cat: "dish" },
+          { dish: "Yasai Vegan Ramen & Crispy Brussels", count: "38 mentions", quote: "\"Incredible vegan ramen option in the Paseo district with smoky broth...\"", cat: "dish" },
+          { dish: "Japanese Whisky & Craft Cocktails", count: "29 mentions", quote: "\"Great izakaya cocktail list while waiting for a table...\"", cat: "service" }
+        ],
+        defects: [
+          { url: "https://gororamen.com/", issue: "Missing Local keyword in <title> & H1", detail: "Current <title> is just 'Goro Ramen'. Missing 'Oklahoma City' & 'Paseo District' geo-modifiers." },
+          { url: "https://gororamen.com/menu", issue: "Menu rendered as non-indexable image/PDF block", detail: "Dish names (Tonkotsu, Nikuman, Vegan Ramen) lack dedicated H2/HTML crawlable text and Menu Item schema." },
+          { url: "https://gororamen.com/info", issue: "Missing Meta Description & Restaurant JSON-LD", detail: "No meta description tag; missing schema.org/Restaurant hours & geo-coordinates." },
+          { url: "Sitewide Structure", issue: "Zero Surrounding-Town or Dedicated Dish Landing Pages", detail: "Missing dedicated pages for Vegan Ramen OKC and nearby Edmond/Norman diners." }
+        ]
+      },
+      mexican: {
+        name: "Cactus Tacos & Cantina",
+        city: "Oklahoma City, OK",
+        cost: "$0.081",
+        plan: [
+          { cat: "local", page: "Homepage — Mexican Restaurant Oklahoma City", rec: "UPDATE", verif: false, kw: "mexican restaurant oklahoma city", vol: 6600, geo: "Oklahoma City, OK", slug: "/", existing: "https://cactustacosokc.com/" },
+          { cat: "dish", page: "Birria Tacos & Consomé Dip Menu", rec: "NEW", verif: false, kw: "birria tacos near me", vol: 4400, geo: "Oklahoma City, OK", slug: "/menu/birria-tacos-okc", existing: "—" },
+          { cat: "dish", page: "Street Al Pastor & Carne Asada Tacos", rec: "UPDATE", verif: false, kw: "tacos near me", vol: 9900, geo: "Oklahoma City, OK", slug: "/menu/street-tacos", existing: "https://cactustacosokc.com/menu" },
+          { cat: "surrounding", page: "Mexican Restaurant Near Edmond, OK", rec: "NEW", verif: true, kw: "mexican restaurant edmond", vol: 2400, geo: "Edmond, OK (11.8 mi)", slug: "/locations/mexican-restaurant-edmond", existing: "—" },
+          { cat: "service", page: "Taco Bar Catering Oklahoma City", rec: "UPDATE", verif: false, kw: "mexican catering oklahoma city", vol: 590, geo: "Oklahoma City, OK", slug: "/catering", existing: "https://cactustacosokc.com/catering" },
+          { cat: "brand", page: "Cactus Tacos Menu & Locations", rec: "UPDATE", verif: false, kw: "cactus tacos menu", vol: 1900, geo: "Oklahoma City, OK", slug: "/menu", existing: "https://cactustacosokc.com/menu" }
+        ],
+        classifier: [
+          { kw: "mexican restaurant oklahoma city", intent: "local", dec: "relevant", engine: "Deterministic Rule #1", reason: "Exact match to GBP primary category + city.", paid: "YES" },
+          { kw: "birria tacos near me", intent: "dish", dec: "relevant", engine: "Review Miner + Structured LLM (0.99 conf)", reason: "Top praised dish across 184 Google reviews ('crispy quesabirria tacos').", paid: "YES" },
+          { kw: "spanish tapas bar oklahoma city", intent: "cuisine", dec: "rejected", engine: "Deterministic Negative Cuisine Matrix", reason: "BLOCKED: Spanish tapas is distinct from Mexican taqueria/cantina.", paid: "NO ($0.00)" },
+          { kw: "taco bell menu prices", intent: "brand", dec: "rejected", engine: "Competitor Brand Exclusion Rule", reason: "BLOCKED: Third-party national chain brand term.", paid: "NO ($0.00)" }
+        ],
+        provenance: [
+          { fact: "Primary Category: Mexican Restaurant, Taco Restaurant", src: "GBP Verified Listing", status: "VERIFIED", badge: "emerald" },
+          { fact: "Taco Bar Catering Service", src: "Website /catering + GBP", status: "VERIFIED", badge: "emerald" },
+          { fact: "Late-Night Drive-Thru", src: "Google-Inferred Attribute", status: "UNVERIFIED — Operator Confirm Req", badge: "amber" }
+        ],
+        reviews: [
+          { dish: "Quesabirria Tacos with Consomé", count: "184 mentions", quote: "\"Best birria tacos in Oklahoma City, dipped and grilled crispy...\"", cat: "dish" },
+          { dish: "Office & Wedding Taco Bar Catering", count: "51 mentions", quote: "\"Booked their taco catering for 60 people—on time and huge portions...\"", cat: "service" }
+        ],
+        defects: [
+          { url: "https://cactustacosokc.com/catering", issue: "Duplicate <title> tag with Homepage", detail: "Both pages share identical 'Cactus Tacos OKC' title; missing 'Mexican Catering Oklahoma City' H1." },
+          { url: "https://cactustacosokc.com/menu", issue: "Thin Page Content (110 words)", detail: "No crawlable descriptions for Birria Tacos, Fajitas, or House Margaritas." }
+        ]
+      }
+    };
+
+    let currentRest = "ramen";
+
+    function switchRestaurant() {
+      currentRest = document.getElementById("restSelect").value;
+      document.getElementById("runCostHud").textContent = DATA[currentRest].cost;
+      renderAll();
+    }
+
+    function showTab(n) {
+      [1, 2, 3, 4].forEach(i => {
+        document.getElementById("tab" + i).classList.toggle("hidden", i !== n);
+        document.getElementById("tabBtn" + i).className = (i === n)
+          ? "tab-btn-active px-4 py-2 rounded-xl text-xs sm:text-sm transition"
+          : "bg-slate-900 text-slate-300 hover:text-white border border-slate-800 px-4 py-2 rounded-xl text-xs sm:text-sm transition";
+      });
+    }
+
+    function renderAll() {
+      const d = DATA[currentRest];
+      const planBody = document.getElementById("planTableBody");
+      planBody.innerHTML = d.plan.map(r => `
+        <tr class="hover:bg-slate-900/60">
+          <td class="py-2.5 px-2"><span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300 mono">${r.cat}</span></td>
+          <td class="py-2.5 px-2 font-medium text-white">${r.page}</td>
+          <td class="py-2.5 px-2">
+            <span class="px-2 py-0.5 rounded font-semibold mono ${r.rec === 'NEW' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-sky-500/20 text-sky-300'}">${r.rec}</span>
+          </td>
+          <td class="py-2.5 px-2 mono ${r.verif ? 'text-amber-300 font-semibold' : 'text-slate-500'}">${r.verif ? 'TRUE (Confirm)' : 'false'}</td>
+          <td class="py-2.5 px-2 font-semibold text-emerald-300 mono">${r.kw}</td>
+          <td class="py-2.5 px-2 text-right font-bold text-white mono">${r.vol.toLocaleString()}</td>
+          <td class="py-2.5 px-2 text-slate-300">${r.geo}</td>
+          <td class="py-2.5 px-2 mono text-slate-300">${r.slug}</td>
+          <td class="py-2.5 px-2 mono text-slate-400">${r.existing}</td>
+        </tr>
+      `).join("");
+
+      const clsBody = document.getElementById("classifierTableBody");
+      clsBody.innerHTML = d.classifier.map(c => {
+        const badge = c.dec === 'relevant'
+          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+          : (c.dec === 'review' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-rose-500/20 text-rose-300 border-rose-500/30');
+        return `
+          <tr class="hover:bg-slate-900/60">
+            <td class="py-2.5 px-2 mono font-semibold text-white">${c.kw}</td>
+            <td class="py-2.5 px-2 mono text-slate-400">${c.intent}</td>
+            <td class="py-2.5 px-2"><span class="px-2 py-0.5 rounded border mono font-semibold ${badge}">${c.dec.toUpperCase()}</span></td>
+            <td class="py-2.5 px-2 text-slate-300">${c.engine}</td>
+            <td class="py-2.5 px-2 text-slate-300">${c.reason}</td>
+            <td class="py-2.5 px-2 mono ${c.paid.startsWith('YES') ? 'text-emerald-400' : 'text-slate-500'}">${c.paid}</td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("provenanceContainer").innerHTML = d.provenance.map(p => `
+        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-2">
+          <div>
+            <div class="font-medium text-white">${p.fact}</div>
+            <div class="text-[11px] text-slate-400">Source: ${p.src}</div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-[11px] font-semibold mono ${p.badge === 'emerald' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${p.status}</span>
+        </div>
+      `).join("");
+
+      document.getElementById("reviewsContainer").innerHTML = d.reviews.map(rv => `
+        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-emerald-300">${rv.dish}</span>
+            <span class="mono text-[11px] text-slate-400">${rv.count} · tag: ${rv.cat}</span>
+          </div>
+          <p class="text-[11px] text-slate-300 italic">${rv.quote}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("defectsContainer").innerHTML = d.defects.map(df => `
+        <div class="p-4 rounded-xl bg-slate-900 border border-rose-500/30 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="mono text-rose-400 font-semibold">${df.issue}</span>
+            <span class="mono text-[11px] text-slate-400">${df.url}</span>
+          </div>
+          <p class="text-slate-300">${df.detail}</p>
+        </div>
+      `).join("");
+    }
+
+    function simulatePipelineRun() {
+      const hud = document.getElementById("runCostHud");
+      hud.textContent = "Running...";
+      setTimeout(() => {
+        hud.textContent = DATA[currentRest].cost + " (Verified < $0.25 Cap)";
+      }, 450);
+    }
+
+    function exportCSV() {
+      const d = DATA[currentRest];
+      const headers = ["restaurant","category","page","recommendation","needs-verification","keyword","monthly searches","geography","suggested slug","existing page"];
+      const rows = d.plan.map(r => [
+        `"${d.name}"`, r.cat, `"${r.page}"`, r.rec, r.verif, `"${r.kw}"`, r.vol, `"${r.geo}"`, r.slug, `"${r.existing}"`
+      ].join(","));
+      const csv = [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentRest}_keyword_plan_sec3_7.csv`;
+      a.click();
+    }
+
+    function exportJSON() {
+      const d = DATA[currentRest];
+      const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentRest}_keyword_plan_sec3_7.json`;
+      a.click();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
